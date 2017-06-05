@@ -19,7 +19,6 @@ function truck(x, y, w, h, speed) {
     }
     
     this.update = function() {
-        console.log(this.sprite.anchor.x);
         this.sprite.body.velocity.x = 0;
         this.sprite.body.velocity.y = 0;
         this.sprite.body.angularVelocity = 0;
