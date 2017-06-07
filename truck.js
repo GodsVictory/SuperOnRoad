@@ -1,50 +1,60 @@
-function truck(x, y, w, h, speed) {
-    this.x = x;
-    this.y = y;
-    this.w = w;
-    this.h = h;
-    this.speed = speed;
-    this.speedBoost = 0;
-    this.turnSpeed = 300;
-    this.boostTime = 1;
-    this.boostCooldown = 3;
+function truck(app) {
+    this.speed = 5;
+    this.turn = .07;
+    this.vel = 0;
+    this.angle = 0;
+    this.boostVel = 5;
+    this.boostVal = 0;
+    this.boostDuration = 1000;
+    this.boostCooldown = 3000;
     this.boostStart = 0;
     this.boostEnd = 0;
-    
-    this.show = function() {
-        this.sprite = game.add.sprite(400, 300, 'truck');
-        this.sprite.scale.setTo(.2,.2);
-        this.sprite.anchor.setTo(0.5, 0.5);
-        game.physics.enable(this.sprite, Phaser.Physics.ARCADE);
-    }
-    
-    this.update = function() {
-        this.sprite.body.velocity.x = 0;
-        this.sprite.body.velocity.y = 0;
-        this.sprite.body.angularVelocity = 0;
-        if (this.boostStart > 0 && game.time.totalElapsedSeconds()-this.boostStart > this.boostTime) {
-            this.speedBoost = 0;
+
+    this.truck = PIXI.Sprite.fromImage('truck.png')
+    this.truck.anchor.set(0.5);
+    this.truck.width = 60;
+    this.truck.height = 30;
+    this.truck.x = app.renderer.width / 2;
+    this.truck.y = app.renderer.height / 2;
+    app.stage.addChild(this.truck);
+
+    this.update = function () {
+        this.truck.rotation += this.angle;
+        var x = this.truck.x + (this.vel + this.boostVal) * Math.cos(this.truck.rotation);
+        var y = this.truck.y + (this.vel + this.boostVal) * Math.sin(this.truck.rotation);
+        if (x > 0 && x < app.renderer.width)
+            this.truck.x = x;
+        if (y > 0 && y < app.renderer.height)
+            this.truck.y = y;
+        if (this.boostStart > 0 && Date.now() - this.boostStart > this.boostDuration) {
+            this.boostVal = 0;
             this.boostStart = 0;
-            this.boostEnd = game.time.totalElapsedSeconds();
+            this.boostEnd = Date.now();
         }
     }
-    
-    this.forward = function(val) {
-        game.physics.arcade.velocityFromAngle(this.sprite.angle, this.speed+this.speedBoost, this.sprite.body.velocity);
+
+    this.forward = function () {
+        this.vel = this.speed;
     }
-    this.left = function(val) {
-        this.sprite.body.angularVelocity = -this.turnSpeed;
+    this.left = function () {
+        this.angle = -this.turn;
     }
-    this.back = function(val) {
-        game.physics.arcade.velocityFromAngle(this.sprite.angle, -(this.speed+this.speedBoost), this.sprite.body.velocity);
+    this.back = function () {
+        this.vel = -this.speed;
     }
-    this.right = function(val) {
-        this.sprite.body.angularVelocity = this.turnSpeed;
+    this.right = function () {
+        this.angle = this.turn;
     }
-    this.boost = function(val) {
-        if (this.boostEnd == 0 || game.time.totalElapsedSeconds() - this.boostEnd >= this.boostCooldown) {
-            this.speedBoost = val;
-            this.boostStart = game.time.totalElapsedSeconds();
+    this.stopVel = function () {
+        this.vel = 0;
+    }
+    this.stopTurn = function () {
+        this.angle = 0;
+    }
+    this.boost = function () {
+        if (this.boostEnd == 0 || Date.now() - this.boostEnd >= this.boostCooldown) {
+            this.boostVal = this.boostVel;
+            this.boostStart = Date.now();
         }
     }
 }

@@ -1,32 +1,64 @@
-var game = new Phaser.Game(800, 600, Phaser.AUTO, 'offroad', { preload: preload, create: create, update: update });
+window.onload = function start() {
+    var app = new PIXI.Application(800, 600, {
+        backgroundColor: 0x1099bb,
+        antialias: true
+    });
+    document.body.appendChild(app.view);
 
-function preload() {
-    game.load.image('truck', 'truck.png');
-}
+    var smoothie = new Smoothie({
+        engine: PIXI,
+        renderer: app.renderer,
+        root: app.stage,
+        fps: 60,
+        update: update.bind(this)
+    });
 
-function create() {
-    game.physics.startSystem(Phaser.Physics.ARCADE);
-    game.stage.backgroundColor = "#000000";
-    player = new truck(50, 50, 60, 30, 300);
-    player.show();
-    
-    forward = game.input.keyboard.addKey(Phaser.Keyboard.W);
-    left = game.input.keyboard.addKey(Phaser.Keyboard.A);
-    back = game.input.keyboard.addKey(Phaser.Keyboard.S);
-    right = game.input.keyboard.addKey(Phaser.Keyboard.D);
-    boost = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
-}
+    var player = new truck(app);
 
-function update() {
-    player.update();
-    if (forward.isDown)
-        player.forward(1);
-    if (left.isDown)
-        player.left(1);
-    if (back.isDown)
-        player.back(1);
-    if (right.isDown)
-        player.right(1);
-    if (boost.isDown)
-        player.boost(200);
+    var forward = keyboard(87);
+    var left = keyboard(65);
+    var back = keyboard(83);
+    var right = keyboard(68);
+    var boost = keyboard(32);
+
+    forward.press = function () {
+        player.forward();
+    }
+    forward.release = function () {
+        player.stopVel();
+        if (back.isDown)
+            player.back();
+    }
+    left.press = function () {
+        player.left();
+    }
+    left.release = function () {
+        player.stopTurn();
+        if (right.isDown)
+            player.right();
+    }
+    back.press = function () {
+        player.back();
+    }
+    back.release = function () {
+        player.stopVel();
+        if (forward.isDown)
+            player.forward();
+    }
+    right.press = function () {
+        player.right();
+    }
+    right.release = function () {
+        player.stopTurn();
+        if (left.isDown)
+            player.left();
+    }
+    boost.press = function () {
+        player.boost();
+    }
+
+    function update() {
+        player.update();
+    }
+    smoothie.start();
 }
