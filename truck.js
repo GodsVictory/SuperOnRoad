@@ -1,4 +1,4 @@
-function truck(app) {
+function truck(app, x, y) {
     this.speed = 5;
     this.turn = .07;
     this.vel = 0;
@@ -14,18 +14,23 @@ function truck(app) {
     this.truck.anchor.set(0.5);
     this.truck.width = 60;
     this.truck.height = 30;
-    this.truck.x = app.renderer.width / 2;
-    this.truck.y = app.renderer.height / 2;
+    //this.truck.x = app.renderer.width / 2;
+    //this.truck.y = app.renderer.height / 2;
+    this.truck.x = x;
+    this.truck.y = y;
     app.stage.addChild(this.truck);
 
-    this.update = function () {
+    this.update = function (level) {
         this.truck.rotation += this.angle;
         var x = this.truck.x + (this.vel + this.boostVal) * Math.cos(this.truck.rotation);
         var y = this.truck.y + (this.vel + this.boostVal) * Math.sin(this.truck.rotation);
-        if (x > 0 && x < app.renderer.width)
+        if (level.contains(this.truck.height, x, y)) {
+            //if (x > this.truck.width / 2 && x < app.renderer.width - this.truck.width / 2)
             this.truck.x = x;
-        if (y > 0 && y < app.renderer.height)
+            //if (y > this.truck.width / 2 && y < app.renderer.height - this.truck.width / 2)
             this.truck.y = y;
+        }
+
         if (this.boostStart > 0 && Date.now() - this.boostStart > this.boostDuration) {
             this.boostVal = 0;
             this.boostStart = 0;

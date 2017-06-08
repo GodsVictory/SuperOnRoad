@@ -1,0 +1,30 @@
+        //distance of corner from center = 33.541
+
+        var c1x = x + 33.541 * cos;
+        var c2x = x - 33.541 * cos;
+        var c3x = x + 33.541 * cos;
+        var c4x = x - 33.541 * cos;
+
+        var c1y = y + 33.541 * sin;
+        var c2y = y - 33.541 * sin;
+        var c3y = y - 33.541 * sin;
+        var c4y = y + 33.541 * sin;
+        //var cornerArray = [ c1x, c1y, c2x, c2y, c3x, c3y, c4x, c4y ];
+        var cornerArrayX = [c1x, c2x, c3x, c4x];
+        var cornerArrayY = [c1y, c2y, c3y, c4y];
+        var inBound = true;
+        for (i = 0; i < cornerArrayX.length; i++) {
+            if (cornerArrayX[i] < 0 || cornerArrayY[i] < 0)
+                inBound = false;
+        }
+        //        for (i = 0; i < cornerArrayX.length; i++)
+        //            if (cornerArrayX[i] < 0 || cornerArrayX[i] > app.renderer.width)
+        //                inBound = false;
+        //        for (i = 0; i < cornerArrayY.length; i++)
+        //            if (cornerArrayY[i] < 0 || cornerArrayY[i] > app.renderer.height)
+        //                inBound = false;
+
+        if (inBound) {
+            this.truck.x = x;
+            this.truck.y = y;
+        }
