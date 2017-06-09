@@ -1,4 +1,4 @@
-function setupInput(player) {
+function setupInput() {
     var forward = keyboard(87);
     var left = keyboard(65);
     var back = keyboard(83);

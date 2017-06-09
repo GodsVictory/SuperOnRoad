@@ -1,5 +1,10 @@
+var app;
+var level;
+var player;
+var tileSize = 5;
+
 window.onload = function start() {
-    var app = new PIXI.Application(800, 600, {
+    app = new PIXI.Application(800, 600, {
         backgroundColor: 0xc2b280,
         antialias: true
     });
@@ -13,12 +18,12 @@ window.onload = function start() {
         update: update.bind(this)
     });
 
-    var level = new level1(app);
-    var player = new truck(app, level.startX, level.startY);
-    setupInput(player, level);
+    level = new level2();
+    player = new truck();
+    setupInput();
 
     function update() {
-        player.update(level);
+        player.update();
     }
     smoothie.start();
 }

@@ -1,4 +1,4 @@
-function truck(app, x, y) {
+function truck() {
     this.speed = 5;
     this.turn = .07;
     this.vel = 0;
@@ -14,21 +14,29 @@ function truck(app, x, y) {
     this.truck.anchor.set(0.5);
     this.truck.width = 60;
     this.truck.height = 30;
-    //this.truck.x = app.renderer.width / 2;
-    //this.truck.y = app.renderer.height / 2;
-    this.truck.x = x;
-    this.truck.y = y;
+    if (level) {
+        this.truck.x = level.startX;
+        this.truck.y = level.startY;
+    } else {
+        this.truck.x = app.renderer.width / 2;
+        this.truck.y = app.renderer.height / 2;
+    }
     app.stage.addChild(this.truck);
 
-    this.update = function (level) {
+    this.update = function () {
         this.truck.rotation += this.angle;
-        var x = this.truck.x + (this.vel + this.boostVal) * Math.cos(this.truck.rotation);
-        var y = this.truck.y + (this.vel + this.boostVal) * Math.sin(this.truck.rotation);
-        if (level.contains(this.truck.height, x, y)) {
-            //if (x > this.truck.width / 2 && x < app.renderer.width - this.truck.width / 2)
-            this.truck.x = x;
-            //if (y > this.truck.width / 2 && y < app.renderer.height - this.truck.width / 2)
-            this.truck.y = y;
+        if (this.vel != 0) {
+            var x = Math.round(this.truck.x + (this.vel + this.boostVal) * Math.cos(this.truck.rotation));
+            var y = Math.round(this.truck.y + (this.vel + this.boostVal) * Math.sin(this.truck.rotation));
+            if (level) {
+                if (level.contains(x, y)) {
+                    this.truck.x = x;
+                    this.truck.y = y;
+                }
+            } else {
+                this.truck.x = x;
+                this.truck.y = y;
+            }
         }
 
         if (this.boostStart > 0 && Date.now() - this.boostStart > this.boostDuration) {
