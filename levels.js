@@ -34,7 +34,7 @@ function level1() {
 }
 
 function level2() {
-    var draw = "\
+    var map = "\
 #################################################################################################################################################################$\
 #################################################################################################################################################################$\
 #################################################################################################################################################################$\
@@ -155,43 +155,40 @@ function level2() {
 #################################################################################################################################################################$\
 #################################################################################################################################################################$\
 #################################################################################################################################################################$";
-    var boundsX = [];
-    var boundsY = [];
+    this.bounds = load(map);
+    this.startX = 200;
+    this.startY = 150;
+    this.contains = function (x, y) {
+        return (this.bounds[Math.round(x / tileSize) + "," + Math.round(y / tileSize)])
+    }
+    
+}
+
+function load(map) {
+    var bounds = {};
     var x = 0;
     var y = 0;
-    for (var i = 0; i < draw.length; i++) {
-        if (draw[i] == '$') {
+    for (var i = 0; i < map.length; i++) {
+        if (map[i] == '$') {
             x = -tileSize;
             y += tileSize;
-        } else if (draw[i] == '#') {
+        } else if (map[i] == '#') {
             var shape = new PIXI.Graphics();
             shape.beginFill(0x784800);
             shape.drawRect(x, y, tileSize, tileSize);
             shape.endFill();
             app.stage.addChild(shape);
-        } else if (draw[i] == 'X') {
+        } else if (map[i] == 'X') {
             var shape = new PIXI.Graphics();
             shape.beginFill(0x000000);
             shape.drawRect(x, y, tileSize, tileSize);
             shape.endFill();
             app.stage.addChild(shape);
-        } else if (draw[i] == ' ') {
-            boundsX.push(x / tileSize);
-            boundsY.push(y / tileSize);
+        } else if (map[i] == ' ') {
+            //bounds[x / tileSize + "," + y / tileSize] = new PIXI.Point(x / tileSize, y / tileSize);
+            bounds[x / tileSize + "," + y / tileSize] = true;
         }
         x += tileSize;
     }
-    this.startX = 200;
-    this.startY = 150;
-    this.contains = function (x, y) {
-        console.log(x + " " + y);
-        x = Math.round(x / tileSize);
-        y = Math.round(y / tileSize);
-        console.log(x + " " + y);
-        for (i = 0; i < boundsX.length; i++) {
-            if (boundsX[i] == x && boundsY[i] == y)
-                return true;
-        }
-        return false;
-    }
+    return bounds;
 }

@@ -14,7 +14,7 @@ window.onload = function start() {
         engine: PIXI,
         renderer: app.renderer,
         root: app.stage,
-        fps: 60,
+        fps: 30,
         update: update.bind(this)
     });
 
