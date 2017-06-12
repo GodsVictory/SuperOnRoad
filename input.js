@@ -1,43 +1,94 @@
 function setupInput() {
-    var forward = keyboard(87);
-    var left = keyboard(65);
-    var back = keyboard(83);
-    var right = keyboard(68);
-    var boost = keyboard(32);
-
-    forward.press = function() {
-        player.forward();
+    var w = keyboard(87);
+    var a = keyboard(65);
+    var s = keyboard(83);
+    var d = keyboard(68);
+    var space = keyboard(32);
+    var upArrow = keyboard(38);
+    var leftArrow = keyboard(37);
+    var downArrow = keyboard(40);
+    var rightArrow = keyboard(39);
+    w.press = function() {
+        pressForward();
     }
-    forward.release = function() {
-        player.stopVel();
-        if (back.isDown)
-            player.back();
+    w.release = function() {
+        releaseForward();
     }
-    left.press = function() {
-        player.left();
+    a.press = function() {
+        pressLeft();
     }
-    left.release = function() {
-        player.stopTurn();
-        if (right.isDown)
-            player.right();
+    a.release = function() {
+        releaseLeft();
     }
-    back.press = function() {
-        player.back();
+    s.press = function() {
+        pressBack();
     }
-    back.release = function() {
-        player.stopVel();
-        if (forward.isDown)
-            player.forward();
+    s.release = function() {
+        releaseBack();
     }
-    right.press = function() {
-        player.right();
+    d.press = function() {
+        pressRight();
     }
-    right.release = function() {
-        player.stopTurn();
-        if (left.isDown)
-            player.left();
+    d.release = function() {
+        releaseRight();
     }
-    boost.press = function() {
+    upArrow.press = function() {
+        pressForward();
+    }
+    upArrow.release = function() {
+        releaseForward();
+    }
+    leftArrow.press = function() {
+        pressLeft();
+    }
+    leftArrow.release = function() {
+        releaseLeft();
+    }
+    downArrow.press = function() {
+        back();
+    }
+    downArrow.release = function() {
+        releaseBack();
+    }
+    rightArrow.press = function() {
+        pressRight();
+    }
+    rightArrow.release = function() {
+        releaseRight();
+    }
+    space.press = function() {
         player.boost();
+    }
+
+    function pressForward() {
+        player.pressForward();
+    }
+
+    function pressLeft() {
+        player.pressLeft();
+    }
+
+    function pressBack() {
+        player.pressBack();
+    }
+
+    function pressRight() {
+        player.pressRight();
+    }
+
+    function releaseForward() {
+        player.releaseForward();
+    }
+
+    function releaseLeft() {
+        player.releaseLeft();
+    }
+
+    function releaseBack() {
+        player.releaseBack();
+    }
+
+    function releaseRight() {
+        player.releaseRight();
     }
 }

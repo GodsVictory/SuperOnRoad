@@ -19,7 +19,7 @@ window.onload = function start() {
     });
 
     level = new level2();
-    player = new truck();
+    player = new player();
     setupInput();
 
     function update() {
