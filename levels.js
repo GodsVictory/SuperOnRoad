@@ -21,7 +21,7 @@ function level1() {
     this.centerY = this.shape.y;
     this.radius = this.shape.width / 2;
 
-    this.contains = function (w, x, y) {
+    this.contains = function(w, x, y) {
         var a = x - this.centerX;
         var b = y - this.centerY;
 
@@ -158,10 +158,10 @@ function level2() {
     this.bounds = load(map);
     this.startX = 200;
     this.startY = 150;
-    this.contains = function (x, y) {
+    this.contains = function(x, y) {
         return (this.bounds[Math.round(x / tileSize) + "," + Math.round(y / tileSize)])
     }
-    
+
 }
 
 function load(map) {

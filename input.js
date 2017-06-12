@@ -5,39 +5,39 @@ function setupInput() {
     var right = keyboard(68);
     var boost = keyboard(32);
 
-    forward.press = function () {
+    forward.press = function() {
         player.forward();
     }
-    forward.release = function () {
+    forward.release = function() {
         player.stopVel();
         if (back.isDown)
             player.back();
     }
-    left.press = function () {
+    left.press = function() {
         player.left();
     }
-    left.release = function () {
+    left.release = function() {
         player.stopTurn();
         if (right.isDown)
             player.right();
     }
-    back.press = function () {
+    back.press = function() {
         player.back();
     }
-    back.release = function () {
+    back.release = function() {
         player.stopVel();
         if (forward.isDown)
             player.forward();
     }
-    right.press = function () {
+    right.press = function() {
         player.right();
     }
-    right.release = function () {
+    right.release = function() {
         player.stopTurn();
         if (left.isDown)
             player.left();
     }
-    boost.press = function () {
+    boost.press = function() {
         player.boost();
     }
 }

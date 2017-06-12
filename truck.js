@@ -23,7 +23,7 @@ function truck() {
     }
     app.stage.addChild(this.truck);
 
-    this.update = function () {
+    this.update = function() {
         this.truck.rotation += this.angle;
         if (this.vel != 0) {
             //console.log(this.truck.containsPoint(new PIXI.Point(level.startX,level.startY)));
@@ -48,25 +48,25 @@ function truck() {
         }
     }
 
-    this.forward = function () {
+    this.forward = function() {
         this.vel = this.speed;
     }
-    this.left = function () {
+    this.left = function() {
         this.angle = -this.turn;
     }
-    this.back = function () {
+    this.back = function() {
         this.vel = -this.speed;
     }
-    this.right = function () {
+    this.right = function() {
         this.angle = this.turn;
     }
-    this.stopVel = function () {
+    this.stopVel = function() {
         this.vel = 0;
     }
-    this.stopTurn = function () {
+    this.stopTurn = function() {
         this.angle = 0;
     }
-    this.boost = function () {
+    this.boost = function() {
         if (this.boostEnd == 0 || Date.now() - this.boostEnd >= this.boostCooldown) {
             this.boostVal = this.boostVel;
             this.boostStart = Date.now();
