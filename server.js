@@ -7,7 +7,6 @@ app.get('/', function(req, res) {
 });
 app.use(express.static('public'));
 var port = process.env.PORT || 3000;
-console.log(port);
 
 var players = [];
 io.on('connection', function(socket) {

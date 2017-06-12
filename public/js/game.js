@@ -21,8 +21,6 @@ window.onload = function start() {
     });
 
     level = new level2();
-    //player = new player();
-    setupInput();
 
     function update() {
         if (player.initialized)
