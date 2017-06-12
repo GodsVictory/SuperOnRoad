@@ -1,5 +1,5 @@
 var setEventHandlers = function() {
-	socket = io.connect('localhost:3000', {
+	socket = io.connect(window.location.host, {
 		'sync disconnect on unload': true
 	});
 	socket.on('getID', function(socketID) {
