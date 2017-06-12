@@ -1,4 +1,5 @@
-function player() {
+function player(id) {
+    this.id = id;
     this.speed = 10;
     this.turn = .1;
     this.forward = 0;
@@ -12,7 +13,7 @@ function player() {
     this.boostStart = 0;
     this.boostEnd = 0;
 
-    this.sprite = new truck();
+    this.sprite = new truck(id);
     if (level) {
         this.sprite.spawnAt(level.startX, level.startY);
     } else {
@@ -21,7 +22,14 @@ function player() {
 
     this.update = function() {
         if (this.left + this.right != 0) {
-            this.sprite.setAngle(this.left + this.right);
+            this.sprite.setRotation(this.sprite.getRotation() + (this.left + this.right));
+            info = {
+                id: this.id,
+                x: this.sprite.getX(),
+                y: this.sprite.getY(),
+                rotation: this.sprite.getRotation()
+            };
+            socket.emit('update', info);
         }
         if (this.forward + this.back != 0) {
             var x = Math.round(this.sprite.getX() + ((this.forward + this.back) * this.boostVal) * Math.cos(this.sprite.getRotation()));
@@ -33,6 +41,13 @@ function player() {
             } else {
                 this.sprite.setPos(x, y);
             }
+            info = {
+                id: this.id,
+                x: this.sprite.getX(),
+                y: this.sprite.getY(),
+                rotation: this.sprite.getRotation()
+            };
+            socket.emit('update', info);
         }
 
         if (this.boostStart > 0 && Date.now() - this.boostStart > this.boostDuration) {
@@ -74,4 +89,5 @@ function player() {
     }
 
     setupInput();
+    this.initialized = true;
 }

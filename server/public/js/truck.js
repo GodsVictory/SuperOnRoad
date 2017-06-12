@@ -1,4 +1,5 @@
-function truck() {
+function truck(id) {
+    this.id = id;
     this.truck = PIXI.Sprite.fromImage('assets/truck.png')
     this.truck.anchor.set(0.5);
     this.truck.width = 50;
@@ -14,14 +15,17 @@ function truck() {
     this.getY = function() {
         return this.truck.y;
     }
-    this.getRotation = function() {
-        return this.truck.rotation;
-    }
     this.setPos = function(x, y) {
         this.truck.x = x;
         this.truck.y = y;
     }
-    this.setAngle = function(angle) {
-        this.truck.rotation += angle;
+    this.getRotation = function() {
+        return this.truck.rotation;
+    }
+    this.setRotation = function(angle) {
+        this.truck.rotation = angle;
+    }
+    this.removeTruck = function() {
+        this.truck.destroy();
     }
 }

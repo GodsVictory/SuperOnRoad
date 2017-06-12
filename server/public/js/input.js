@@ -45,7 +45,7 @@ function setupInput() {
         releaseLeft();
     }
     downArrow.press = function() {
-        back();
+        pressBack();
     }
     downArrow.release = function() {
         releaseBack();
