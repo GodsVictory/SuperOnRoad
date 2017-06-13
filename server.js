@@ -6,7 +6,7 @@ app.get('/', function(req, res) {
 	res.sendFile(__dirname, 'public/index.html');
 });
 app.use(express.static('public'));
-var port = process.env.PORT || 3000;
+var port = process.env.PORT || 80;
 
 var players = [];
 io.on('connection', function(socket) {

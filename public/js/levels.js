@@ -168,22 +168,13 @@ function load(map) {
     var bounds = {};
     var x = 0;
     var y = 0;
+
+    var bg = PIXI.Sprite.fromImage('assets/level2.png');
+    app.stage.addChild(bg);
     for (var i = 0; i < map.length; i++) {
         if (map[i] == '$') {
             x = -tileSize;
             y += tileSize;
-        } else if (map[i] == '#') {
-            var shape = new PIXI.Graphics();
-            shape.beginFill(0x784800);
-            shape.drawRect(x, y, tileSize, tileSize);
-            shape.endFill();
-            app.stage.addChild(shape);
-        } else if (map[i] == 'X') {
-            var shape = new PIXI.Graphics();
-            shape.beginFill(0x000000);
-            shape.drawRect(x, y, tileSize, tileSize);
-            shape.endFill();
-            app.stage.addChild(shape);
         } else if (map[i] == ' ') {
             //bounds[x / tileSize + "," + y / tileSize] = new PIXI.Point(x / tileSize, y / tileSize);
             bounds[x / tileSize + "," + y / tileSize] = true;

@@ -1,4 +1,4 @@
-var setEventHandlers = function() {
+function openSocket() {
 	socket = io.connect(window.location.hostname, {
 		'sync disconnect on unload': true
 	});
@@ -38,14 +38,14 @@ var setEventHandlers = function() {
 			select.entitiy.setRotation(data.rotation);
 		}
 	});
-
-	function playerById(id) {
-		for (var i = 0; i < remotePlayers.length; i++)
-			if (remotePlayers[i].id === id)
-				return {
-					entitiy: remotePlayers[i],
-					index: i
-				}
-		return false
-	}
 };
+
+function playerById(id) {
+	for (var i = 0; i < remotePlayers.length; i++)
+		if (remotePlayers[i].id === id)
+			return {
+				entitiy: remotePlayers[i],
+				index: i
+			}
+	return false
+}

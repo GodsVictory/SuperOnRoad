@@ -1,16 +1,23 @@
 var app;
+var mobile;
 var level;
 var player;
 var tileSize = 5;
 var remotePlayers = [];
 
 window.onload = function start() {
-    setEventHandlers();
+    openSocket();
+
     app = new PIXI.Application(800, 600, {
         backgroundColor: 0xc2b280,
         antialias: true
     });
     document.body.appendChild(app.view);
+
+    if (isMobile.any)
+        setupMobile();
+
+    level = new level2();
 
     var smoothie = new Smoothie({
         engine: PIXI,
@@ -19,8 +26,6 @@ window.onload = function start() {
         fps: 30,
         update: update.bind(this)
     });
-
-    level = new level2();
 
     function update() {
         if (player.initialized)

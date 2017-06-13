@@ -1,6 +1,6 @@
 function truck(id) {
     this.id = id;
-    this.truck = PIXI.Sprite.fromImage('assets/truck.png')
+    this.truck = PIXI.Sprite.fromImage('assets/truck.png');
     this.truck.anchor.set(0.5);
     this.truck.width = 50;
     this.truck.height = 30;
