@@ -90,13 +90,15 @@ function player(id) {
     }
 
     setupInput();
-    this.initialized = true;
 
     function getRandomColor() {
-        var c = '';
-        while (c.length < 7) {
-            c += (Math.random()).toString(16).substr(-6).substr(-1)
-        }
-        return '0x' + c;
+        var colors = ['0xff0000', '0xff00ff', '0x5000ff', '0x0000ff', '0x00bbff', '0x00ffff', '0x00ff00', '0xffff00', '0xffaa00'];
+        return colors[getRandomInt(0, colors.length - 1)];
     }
+
+    function getRandomInt(min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    this.initialized = true;
 }
