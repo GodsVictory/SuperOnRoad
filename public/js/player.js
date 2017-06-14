@@ -19,6 +19,7 @@ function player(id) {
     } else {
         this.sprite.spawnAt(app.renderer.width / 2, app.renderer.height / 2);
     }
+    this.sprite.setTint(getRandomColor());
 
     this.update = function() {
         if (this.left + this.right != 0) {
@@ -90,4 +91,12 @@ function player(id) {
 
     setupInput();
     this.initialized = true;
+
+    function getRandomColor() {
+        var c = '';
+        while (c.length < 7) {
+            c += (Math.random()).toString(16).substr(-6).substr(-1)
+        }
+        return '0x' + c;
+    }
 }

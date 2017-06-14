@@ -3,14 +3,14 @@ function openSocket() {
 		'sync disconnect on unload': true
 	});
 	socket.on('getID', function(socketID) {
-		console.log('your ID is', socketID);
 		player = new player(socketID);
 		player.id = socketID;
 		info = {
 			id: socketID,
 			x: player.sprite.getX(),
 			y: player.sprite.getY(),
-			rotation: player.sprite.getRotation()
+			rotation: player.sprite.getRotation(),
+			tint: player.sprite.getTint()
 		};
 		socket.emit('initialize', info);
 	});
@@ -19,14 +19,14 @@ function openSocket() {
 			var newTruck = new truck(data.id);
 			newTruck.spawnAt(data.x, data.y);
 			newTruck.setRotation(data.rotation);
+			newTruck.setTint(data.tint);
 			remotePlayers.push(newTruck);
-			console.log('creating', data.id);
+			console.log('creating', data.tint);
 		}
 	});
 	socket.on('destroy', function(data) {
 		var select = playerById(data);
 		if (select) {
-			console.log('removing', data);
 			select.entitiy.removeTruck();
 			remotePlayers.splice(select.index, 1);
 		}
