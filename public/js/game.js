@@ -1,4 +1,5 @@
 var app;
+var socket;
 var mobile;
 var level;
 var player;

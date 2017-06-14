@@ -1,7 +1,5 @@
 function openSocket() {
-	socket = io.connect(window.location.hostname, {
-		'sync disconnect on unload': true
-	});
+	socket = io();
 	socket.on('getID', function(socketID) {
 		player = new player(socketID);
 		player.id = socketID;

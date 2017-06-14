@@ -1,13 +1,14 @@
 var express = require('express');
 var app = express();
 var server = require('http').createServer(app);
-var io = require('socket.io')(server);
 app.get('/', function(req, res) {
 	res.sendFile(__dirname, 'public/index.html');
 });
 app.use(express.static('public'));
 var port = process.env.PORT || 80;
+server.listen(port);
 
+var io = require('socket.io')(server);
 var players = [];
 io.on('connection', function(socket) {
 	socket.emit('getID', socket.id);
@@ -46,4 +47,3 @@ io.on('connection', function(socket) {
 		exist = false;
 	});
 });
-server.listen(port);
