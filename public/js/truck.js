@@ -1,7 +1,7 @@
 function Truck(id, type) {
     this.id = id;
     this.type = type;
-    this.truck = PIXI.Sprite.fromImage('assets/' + this.type + '.png');
+    this.truck = PIXI.Sprite.fromImage('assets/sprites/' + this.type + '.png');
     this.truck.anchor.set(0.5);
     this.truck.rotation = 1.5708;
     this.truck.width = 75;

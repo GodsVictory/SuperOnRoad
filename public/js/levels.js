@@ -169,7 +169,7 @@ function load(map) {
     var x = 0;
     var y = 0;
 
-    var bg = PIXI.Sprite.fromImage('assets/level2.png');
+    var bg = PIXI.Sprite.fromImage('assets/levels/level2.png');
     app.stage.addChild(bg);
     for (var i = 0; i < map.length; i++) {
         if (map[i] == '$') {

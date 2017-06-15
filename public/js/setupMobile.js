@@ -42,7 +42,7 @@ function setupMobile() {
 	});
 
 	function Arrow(x, y, r) {
-		this.arrow = PIXI.Sprite.fromImage('assets/arrow.png');
+		this.arrow = PIXI.Sprite.fromImage('assets/interface/arrow.png');
 		this.arrow.width = arrowSize;
 		this.arrow.height = arrowSize;
 		this.arrow.anchor.set(0.5);
