@@ -1,5 +1,4 @@
-function Truck(id, type) {
-    this.id = id;
+function Truck(type) {
     this.type = type;
     this.truck = PIXI.Sprite.fromImage('assets/sprites/' + this.type + '.png');
     this.truck.anchor.set(0.5);

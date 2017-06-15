@@ -2,7 +2,10 @@ function openSocket() {
 	socket = io();
 
 	socket.on('getID', function(data) {
-		player = new Player(data);
+		if (!player)
+			player = new Player(data);
+		else
+			player.id = data;
 		info = {
 			id: player.id,
 			x: player.sprite.getX(),
@@ -16,7 +19,7 @@ function openSocket() {
 		socket.on('create', function(data) {
 			for (var i in data) {
 				if (i != player.id && !remotePlayers[i]) {
-					var newTruck = new Truck(data[i].id, data[i].type);
+					var newTruck = new Truck(data[i].type);
 					newTruck.spawnAt(data[i].x, data[i].y);
 					newTruck.setRotation(data[i].rotation);
 					//newTruck.setTint(data[i].tint);

@@ -15,7 +15,7 @@ function Player(id) {
     this.sprites = ['ambulance', 'audi', 'black_viper', 'car', 'mini_truck', 'mini_van', 'police', 'sedan', 'sonic', 'taxi', 'trashmaster', 'truck'];
     this.type = this.sprites[getRandomInt(0, this.sprites.length - 1)];
 
-    this.sprite = new Truck(id, this.type);
+    this.sprite = new Truck(this.type);
     if (level) {
         this.sprite.spawnAt(level.startX, level.startY);
     } else {
