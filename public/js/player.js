@@ -12,7 +12,7 @@ function Player(id) {
     this.boostCooldown = 3000;
     this.boostStart = 0;
     this.boostEnd = 0;
-    this.sprites = ['ambulance', 'audi', 'black_viper', 'car', 'mini_truck', 'mini_van', 'police', 'sonic', 'taxi', 'trashmaster', 'truck'];
+    this.sprites = ['ambulance', 'audi', 'black_viper', 'car', 'mini_truck', 'mini_van', 'police', 'sedan', 'sonic', 'taxi', 'trashmaster', 'truck'];
     this.type = this.sprites[getRandomInt(0, this.sprites.length - 1)];
 
     this.sprite = new Truck(id, this.type);
