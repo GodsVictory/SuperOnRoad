@@ -14,6 +14,7 @@ window.onload = function start() {
         antialias: true
     });
     document.body.appendChild(app.view);
+
     mobile = new PIXI.Application(app.view.width, 600, {
         backgroundColor: 0xFFFFFF,
         antialias: true
