@@ -1,9 +1,5 @@
 function setupMobile() {
-	mobile = new PIXI.Application(app.view.width, 600, {
-		backgroundColor: 0xFFFFFF,
-		antialias: true
-	});
-	document.body.appendChild(mobile.view);
+
 	var width = mobile.view.width;
 	var height = mobile.view.height;
 	var arrowSize = 150;
