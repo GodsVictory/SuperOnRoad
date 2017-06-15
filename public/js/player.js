@@ -1,7 +1,7 @@
 function Player(id) {
     this.id = id;
-    this.speed = 10;
-    this.turn = .1;
+    this.speed = 5;
+    this.turn = .055;
     this.forward = 0;
     this.back = 0;
     this.left = 0;
@@ -21,9 +21,9 @@ function Player(id) {
     }
     this.sprite.setTint(getRandomColor());
 
-    this.update = function() {
+    this.update = function(delta) {
         if (this.left + this.right != 0) {
-            this.sprite.setRotation(this.sprite.getRotation() + (this.left + this.right));
+            this.sprite.setRotation(this.sprite.getRotation() + (this.left * delta + this.right * delta));
             info = {
                 id: this.id,
                 x: this.sprite.getX(),
@@ -34,8 +34,8 @@ function Player(id) {
             socket.emit('update', info);
         }
         if (this.forward + this.back != 0) {
-            var x = Math.round(this.sprite.getX() + ((this.forward + this.back) * this.boostVal) * Math.cos(this.sprite.getRotation()));
-            var y = Math.round(this.sprite.getY() + ((this.forward + this.back) * this.boostVal) * Math.sin(this.sprite.getRotation()));
+            var x = this.sprite.getX() + ((this.forward * delta + this.back * delta) * this.boostVal) * Math.cos(this.sprite.getRotation());
+            var y = this.sprite.getY() + ((this.forward * delta + this.back * delta) * this.boostVal) * Math.sin(this.sprite.getRotation());
             if (level) {
                 if (level.contains(x, y)) {
                     this.sprite.setPos(x, y);

@@ -10,31 +10,35 @@ function openSocket() {
 			tint: player.sprite.getTint()
 		};
 		socket.emit('initialize', info);
-	});
 
-	socket.on('create', function(data) {
-		for (var i in data) {
-			if (i != player.id && !remotePlayers[i]) {
-				var newTruck = new Truck(data[i].id);
-				newTruck.spawnAt(data[i].x, data[i].y);
-				newTruck.setRotation(data[i].rotation);
-				newTruck.setTint(data[i].tint);
-				remotePlayers[i] = newTruck;
+		socket.on('create', function(data) {
+			for (var i in data) {
+				if (i != player.id && !remotePlayers[i]) {
+					var newTruck = new Truck(data[i].id);
+					newTruck.spawnAt(data[i].x, data[i].y);
+					newTruck.setRotation(data[i].rotation);
+					newTruck.setTint(data[i].tint);
+					remotePlayers[i] = newTruck;
+				}
 			}
-		}
-	});
 
-	socket.on('destroy', function(data) {
-		remotePlayers[data].removeTruck();
-		delete remotePlayers[data];
-	});
+			socket.on('update', function(data) {
+				for (var i in data) {
+					if (i != player.id) {
+						if (remotePlayers[data]) {
+							remotePlayers[i].setPos(data[i].x, data[i].y);
+							remotePlayers[i].setRotation(data[i].rotation);
+						}
+					}
+				}
+			});
 
-	socket.on('update', function(data) {
-		for (var i in data) {
-			if (i != player.id) {
-				remotePlayers[i].setPos(data[i].x, data[i].y);
-				remotePlayers[i].setRotation(data[i].rotation);
-			}
-		}
+			socket.on('destroy', function(data) {
+				if (remotePlayers[data]) {
+					remotePlayers[data].removeTruck();
+					delete remotePlayers[data];
+				}
+			});
+		});
 	});
 };

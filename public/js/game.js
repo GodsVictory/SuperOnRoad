@@ -20,17 +20,13 @@ window.onload = function start() {
 
     level = new Level2();
 
-    var smoothie = new Smoothie({
-        engine: PIXI,
-        renderer: app.renderer,
-        root: app.stage,
-        fps: 30,
-        update: update.bind(this)
-    });
-
-    function update() {
+    function update(delta) {
         if (player)
-            player.update();
+            player.update(delta);
     }
-    smoothie.start();
+
+    app.ticker.add(function(delta) {
+        if (player)
+            player.update(delta);
+    });
 }

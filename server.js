@@ -26,7 +26,11 @@ io.on('connection', function(socket) {
 
 	socket.on('update', function(data) {
 		players[socket.id] = data;
-		io.emit('update', players);
 	});
 
 });
+
+const gameloop = require('node-gameloop');
+const id = gameloop.setGameLoop(function(delta) {
+	io.emit('update', players);
+}, 1000 / 60);

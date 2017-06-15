@@ -8,7 +8,7 @@ function setupMobile() {
 	var height = mobile.view.height;
 	var arrowSize = 150;
 
-	var arrowUp = new arrow(arrowSize, height / 2 - arrowSize * .75, 0);
+	var arrowUp = new Arrow(arrowSize, 150, 0);
 	arrowUp.arrow.on('pointerdown', function(e) {
 		player.pressForward();
 	});
@@ -16,7 +16,7 @@ function setupMobile() {
 		player.releaseForward();
 	});
 
-	var arrowDown = new arrow(arrowSize, height / 2 + arrowSize * .75, 1);
+	var arrowDown = new Arrow(arrowSize, 350, 1);
 	arrowDown.arrow.on('pointerdown', function(e) {
 		player.pressBack();
 	});
@@ -24,7 +24,7 @@ function setupMobile() {
 		player.releaseBack();
 	});
 
-	var arrowLeft = new arrow(width - arrowSize * 2, height / 2, 1.5);
+	var arrowLeft = new Arrow(width - arrowSize * 2, 350, 1.5);
 	arrowLeft.arrow.on('pointerdown', function(e) {
 		player.pressLeft();
 	});
@@ -32,7 +32,7 @@ function setupMobile() {
 		player.releaseLeft();
 	});
 
-	var arrowRight = new arrow(width - arrowSize * .75, height / 2, .5);
+	var arrowRight = new Arrow(width - arrowSize * .75, 350, .5);
 	arrowRight.arrow.on('pointerdown', function(e) {
 		player.pressRight();
 	});
@@ -40,7 +40,12 @@ function setupMobile() {
 		player.releaseRight();
 	});
 
-	function arrow(x, y, r) {
+	var boost = new Arrow(width - arrowSize * 1.375, 150, 0);
+	boost.arrow.on('pointerdown', function(e) {
+		player.boost();
+	});
+
+	function Arrow(x, y, r) {
 		this.arrow = PIXI.Sprite.fromImage('assets/arrow.png');
 		this.arrow.width = arrowSize;
 		this.arrow.height = arrowSize;
