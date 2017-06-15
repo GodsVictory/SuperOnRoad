@@ -1,9 +1,11 @@
-function Truck(id) {
+function Truck(id, type) {
     this.id = id;
-    this.truck = PIXI.Sprite.fromImage('assets/truck.png');
+    this.type = type;
+    this.truck = PIXI.Sprite.fromImage('assets/' + this.type + '.png');
     this.truck.anchor.set(0.5);
-    this.truck.width = 50;
-    this.truck.height = 30;
+    this.truck.rotation = 1.5708;
+    this.truck.width = 100;
+    this.truck.height = 100;
     this.spawnAt = function(x, y) {
         this.truck.x = x;
         this.truck.y = y;

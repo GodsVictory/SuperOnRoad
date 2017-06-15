@@ -25,7 +25,7 @@ io.on('connection', function(socket) {
 	});
 
 	socket.on('update', function(data) {
-		players[socket.id] = data;
+		Object.assign(players[socket.id], data);
 		socket.broadcast.emit('update', {
 			id: socket.id,
 			x: players[socket.id].x,

@@ -8,17 +8,18 @@ function openSocket() {
 			x: player.sprite.getX(),
 			y: player.sprite.getY(),
 			rotation: player.sprite.getRotation(),
-			tint: player.sprite.getTint()
+			//tint: player.sprite.getTint(),
+			type: player.sprite.type
 		};
 		socket.emit('initialize', info);
 
 		socket.on('create', function(data) {
 			for (var i in data) {
 				if (i != player.id && !remotePlayers[i]) {
-					var newTruck = new Truck(data[i].id);
+					var newTruck = new Truck(data[i].id, data[i].type);
 					newTruck.spawnAt(data[i].x, data[i].y);
 					newTruck.setRotation(data[i].rotation);
-					newTruck.setTint(data[i].tint);
+					//newTruck.setTint(data[i].tint);
 					remotePlayers[i] = newTruck;
 				}
 			}
