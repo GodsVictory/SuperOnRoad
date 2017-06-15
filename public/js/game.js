@@ -9,8 +9,9 @@ var remotePlayers = {};
 window.onload = function start() {
     openSocket();
 
+    PIXI.SCALE_MODES.DEFAULT = PIXI.SCALE_MODES.NEAREST;
+
     app = new PIXI.Application(800, 600, {
-        backgroundColor: 0xc2b280,
         antialias: true
     });
     document.body.appendChild(app.view);
