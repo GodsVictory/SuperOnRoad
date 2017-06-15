@@ -14,7 +14,7 @@ function openSocket() {
 
 	socket.on('create', function(data) {
 		for (var i in data) {
-			if (i != player.id) {
+			if (i != player.id && !remotePlayers[i]) {
 				var newTruck = new Truck(data[i].id);
 				newTruck.spawnAt(data[i].x, data[i].y);
 				newTruck.setRotation(data[i].rotation);
