@@ -1,4 +1,4 @@
-function player(id) {
+function Player(id) {
     this.id = id;
     this.speed = 10;
     this.turn = .1;
@@ -13,7 +13,7 @@ function player(id) {
     this.boostStart = 0;
     this.boostEnd = 0;
 
-    this.sprite = new truck(id);
+    this.sprite = new Truck(id);
     if (level) {
         this.sprite.spawnAt(level.startX, level.startY);
     } else {
@@ -28,7 +28,8 @@ function player(id) {
                 id: this.id,
                 x: this.sprite.getX(),
                 y: this.sprite.getY(),
-                rotation: this.sprite.getRotation()
+                rotation: this.sprite.getRotation(),
+                tint: this.sprite.getTint()
             };
             socket.emit('update', info);
         }
@@ -46,7 +47,8 @@ function player(id) {
                 id: this.id,
                 x: this.sprite.getX(),
                 y: this.sprite.getY(),
-                rotation: this.sprite.getRotation()
+                rotation: this.sprite.getRotation(),
+                tint: this.sprite.getTint()
             };
             socket.emit('update', info);
         }
@@ -99,6 +101,4 @@ function player(id) {
     function getRandomInt(min, max) {
         return Math.floor(Math.random() * (max - min + 1)) + min;
     }
-
-    this.initialized = true;
 }

@@ -4,7 +4,7 @@ var mobile;
 var level;
 var player;
 var tileSize = 5;
-var remotePlayers = [];
+var remotePlayers = {};
 
 window.onload = function start() {
     openSocket();
@@ -18,7 +18,7 @@ window.onload = function start() {
     if (isMobile.any)
         setupMobile();
 
-    level = new level2();
+    level = new Level2();
 
     var smoothie = new Smoothie({
         engine: PIXI,
@@ -29,7 +29,7 @@ window.onload = function start() {
     });
 
     function update() {
-        if (player.initialized)
+        if (player)
             player.update();
     }
     smoothie.start();

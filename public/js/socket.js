@@ -1,10 +1,9 @@
 function openSocket() {
 	socket = io();
-	socket.on('getID', function(socketID) {
-		player = new player(socketID);
-		player.id = socketID;
+
+	socket.on('getID', function(data) {
+		player = new Player(data);
 		info = {
-			id: socketID,
 			x: player.sprite.getX(),
 			y: player.sprite.getY(),
 			rotation: player.sprite.getRotation(),
@@ -12,38 +11,30 @@ function openSocket() {
 		};
 		socket.emit('initialize', info);
 	});
+
 	socket.on('create', function(data) {
-		if (data.id != player.id) {
-			var newTruck = new truck(data.id);
-			newTruck.spawnAt(data.x, data.y);
-			newTruck.setRotation(data.rotation);
-			newTruck.setTint(data.tint);
-			remotePlayers.push(newTruck);
-			console.log('creating', data.tint);
+		for (var i in data) {
+			if (i != player.id) {
+				var newTruck = new Truck(data[i].id);
+				newTruck.spawnAt(data[i].x, data[i].y);
+				newTruck.setRotation(data[i].rotation);
+				newTruck.setTint(data[i].tint);
+				remotePlayers[i] = newTruck;
+			}
 		}
 	});
+
 	socket.on('destroy', function(data) {
-		var select = playerById(data);
-		if (select) {
-			select.entitiy.removeTruck();
-			remotePlayers.splice(select.index, 1);
-		}
+		remotePlayers[data].removeTruck();
+		delete remotePlayers[data];
 	});
+
 	socket.on('update', function(data) {
-		var select = playerById(data.id);
-		if (select) {
-			select.entitiy.setPos(data.x, data.y);
-			select.entitiy.setRotation(data.rotation);
+		for (var i in data) {
+			if (i != player.id) {
+				remotePlayers[i].setPos(data[i].x, data[i].y);
+				remotePlayers[i].setRotation(data[i].rotation);
+			}
 		}
 	});
 };
-
-function playerById(id) {
-	for (var i = 0; i < remotePlayers.length; i++)
-		if (remotePlayers[i].id === id)
-			return {
-				entitiy: remotePlayers[i],
-				index: i
-			}
-	return false
-}
