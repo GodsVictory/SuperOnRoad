@@ -26,11 +26,18 @@ io.on('connection', function(socket) {
 
 	socket.on('update', function(data) {
 		players[socket.id] = data;
+		socket.broadcast.emit('update', {
+			id: socket.id,
+			x: players[socket.id].x,
+			y: players[socket.id].y,
+			rotation: players[socket.id].rotation
+		});
 	});
 
 });
 
+/*
 const gameloop = require('node-gameloop');
 const id = gameloop.setGameLoop(function(delta) {
 	io.emit('update', players);
-}, 1000 / 60);
+}, 1000 / 60);*/
