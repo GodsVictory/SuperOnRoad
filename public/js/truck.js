@@ -4,8 +4,8 @@ function Truck(id, type) {
     this.truck = PIXI.Sprite.fromImage('assets/' + this.type + '.png');
     this.truck.anchor.set(0.5);
     this.truck.rotation = 1.5708;
-    this.truck.width = 100;
-    this.truck.height = 100;
+    this.truck.width = 75;
+    this.truck.height = 75;
     this.spawnAt = function(x, y) {
         this.truck.x = x;
         this.truck.y = y;
