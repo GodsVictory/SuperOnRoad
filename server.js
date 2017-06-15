@@ -33,5 +33,4 @@ io.on('connection', function(socket) {
 const gameloop = require('node-gameloop');
 const id = gameloop.setGameLoop(function(delta) {
 	io.emit('update', players);
-	console.log('update');
 }, 1000 / 60);

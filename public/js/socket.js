@@ -25,7 +25,7 @@ function openSocket() {
 			socket.on('update', function(data) {
 				for (var i in data) {
 					if (i != player.id) {
-						if (remotePlayers[data]) {
+						if (remotePlayers[i]) {
 							remotePlayers[i].setPos(data[i].x, data[i].y);
 							remotePlayers[i].setRotation(data[i].rotation);
 						}
