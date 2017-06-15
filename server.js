@@ -41,3 +41,9 @@ const gameloop = require('node-gameloop');
 const id = gameloop.setGameLoop(function(delta) {
 	io.emit('update', players);
 }, 1000 / 60);*/
+
+/*
+	Object.keys(io.sockets.sockets).forEach(function(id) {
+		console.log("ID:", id) // socketId
+	})
+	*/
