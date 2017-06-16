@@ -1,12 +1,12 @@
 function setupMobile() {
 
-	mobile = new PIXI.Application(app.view.width, app.view.height, {
+	mobile = new PIXI.Application(800, 600, {
 		backgroundColor: 0xFFFFFF,
 		antialias: true
 	});
 	document.body.appendChild(mobile.view);
 	mobile.renderer.view.style.position = 'absolute';
-	mobile.renderer.view.style.top = app.renderer.height;
+	mobile.renderer.view.style.top = 600;
 	mobile.renderer.view.style.left = 0;
 
 	var width = mobile.view.width;
