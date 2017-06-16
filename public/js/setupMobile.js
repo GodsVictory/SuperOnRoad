@@ -11,39 +11,39 @@ function setupMobile() {
 
 	var arrowUp = new Arrow(150, 100, 0);
 	arrowUp.arrow.on('pointerdown', function(e) {
-		player.pressForward();
+		socket.emit('update', 'pressForward');
 	});
 	arrowUp.arrow.on('pointerup', function(e) {
-		player.releaseForward();
+		socket.emit('update', 'releaseForward');
 	});
 
 	var arrowDown = new Arrow(150, 300, 1);
 	arrowDown.arrow.on('pointerdown', function(e) {
-		player.pressBack();
+		socket.emit('update', 'pressBack');
 	});
 	arrowDown.arrow.on('pointerup', function(e) {
-		player.releaseBack();
+		socket.emit('update', 'releaseBack');
 	});
 
 	var arrowLeft = new Arrow(500, 300, 1.5);
 	arrowLeft.arrow.on('pointerdown', function(e) {
-		player.pressLeft();
+		socket.emit('update', 'pressLeft');
 	});
 	arrowLeft.arrow.on('pointerup', function(e) {
-		player.releaseLeft();
+		socket.emit('update', 'releaseLeft');
 	});
 
 	var arrowRight = new Arrow(700, 300, .5);
 	arrowRight.arrow.on('pointerdown', function(e) {
-		player.pressRight();
+		socket.emit('update', 'pressRight');
 	});
 	arrowRight.arrow.on('pointerup', function(e) {
-		player.releaseRight();
+		socket.emit('update', 'releaseRight');
 	});
 
 	var boost = new Arrow(600, 100, 0);
 	boost.arrow.on('pointerdown', function(e) {
-		player.boost();
+		socket.emit('update', 'boost');
 	});
 
 	function Arrow(x, y, r) {
