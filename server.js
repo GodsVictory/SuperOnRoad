@@ -35,8 +35,8 @@ io.on('connection', function(socket) {
 
 var Player = function(id, x, y, rotation, type, level) {
 	this.id = id;
-	this.speed = 5;
-	this.turn = .055;
+	this.speed = 300;
+	this.turn = 3;
 	this.x = x;
 	this.y = y;
 	this.rotation = rotation;
@@ -62,7 +62,7 @@ var Player = function(id, x, y, rotation, type, level) {
 		if (data == 'releaseBack')
 			this.back = 0;
 		if (data == 'pressLeft')
-			this.left = this.turn;
+			this.left = -this.turn;
 		if (data == 'releaseLeft')
 			this.left = 0;
 		if (data == 'pressRight')
@@ -85,14 +85,14 @@ const gameloop = require('node-gameloop');
 let frameCount = 0;
 const id = gameloop.setGameLoop(function(delta) {
 	for (var i in players) {
-		players[i].rotation = players[i].rotation - players[i].left + players[i].right;
+		players[i].rotation = players[i].rotation + (players[i].left + players[i].right) * delta;
 		if (players[i].boostStart > 0 && Date.now() - players[i].boostStart > players[i].boostDuration) {
 			players[i].boostVal = 1;
 			players[i].boostStart = 0;
 			players[i].boostEnd = Date.now();
 		}
-		var x = players[i].x + (players[i].forward - players[i].back) * players[i].boostVal * Math.sin(players[i].rotation);
-		var y = players[i].y - (players[i].forward - players[i].back) * players[i].boostVal * Math.cos(players[i].rotation);
+		var x = players[i].x + (players[i].forward - players[i].back) * players[i].boostVal * delta * Math.sin(players[i].rotation);
+		var y = players[i].y - (players[i].forward - players[i].back) * players[i].boostVal * delta * Math.cos(players[i].rotation);
 
 		if (players[i].level)
 			if (players[i].level.contains(x, y)) {

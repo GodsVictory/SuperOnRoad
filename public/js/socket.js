@@ -10,6 +10,10 @@ function openSocket() {
 		socket.emit('level', '1');
 
 		socket.on('create', function(data) {
+			for (var i in players) {
+				players[i].removeTruck();
+				delete players[i];
+			}
 			for (var i in data) {
 				if (i != id && !players[i]) {
 					var newTruck = new Truck(data[i].type);
