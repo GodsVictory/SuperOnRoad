@@ -17,11 +17,9 @@ function openSocket() {
 					newTruck.setRotation(data[i].rotation);
 					players[i] = newTruck;
 				} else if (i == id) {
-					if (!player) {
-						player = new Truck(data[i].type);
-						player.spawnAt(data[i].x, data[i].y);
-						players[data[i].id] = player;
-					}
+					player = new Truck(data[i].type);
+					player.spawnAt(data[i].x, data[i].y);
+					players[data[i].id] = player;
 				}
 			}
 
