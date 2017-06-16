@@ -11,19 +11,16 @@ window.onload = function start() {
 
     PIXI.SCALE_MODES.DEFAULT = PIXI.SCALE_MODES.NEAREST;
 
+    if (isMobile.any)
+        setupMobile();
+
     app = new PIXI.Application(800, 600, {
         antialias: true
     });
     document.body.appendChild(app.view);
-
-    mobile = new PIXI.Application(app.view.width, 600, {
-        backgroundColor: 0xFFFFFF,
-        antialias: true
-    });
-    document.body.appendChild(mobile.view);
-
-    if (isMobile.any)
-        setupMobile();
+    app.renderer.view.style.position = 'absolute';
+    app.renderer.view.style.top = 0;
+    app.renderer.view.style.left = 0;
 
     level = new Level2();
 
