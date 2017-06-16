@@ -1,10 +1,11 @@
 var app;
 var socket;
+var id;
 var mobile;
 var level;
 var player;
 var tileSize = 5;
-var remotePlayers = {};
+var players = {};
 
 window.onload = function start() {
     openSocket();
@@ -22,19 +23,5 @@ window.onload = function start() {
     app.renderer.view.style.top = 0;
     app.renderer.view.style.left = 0;
 
-    level = new Level2();
-
-    function update(delta) {
-        if (player)
-            player.update(delta);
-    }
-
-    app.ticker.add(function(delta) {
-        if (player)
-            player.update(delta);
-    });
-}
-
-function getRandomInt(min, max) {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
+    setupInput();
 }

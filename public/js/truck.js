@@ -35,4 +35,11 @@ function Truck(type) {
     this.getTint = function() {
         return this.truck.tint;
     }
+    this.getInfo = function() {
+        return {
+            x: this.getX(),
+            y: this.getY(),
+            rotation: this.getRotation()
+        };
+    }
 }

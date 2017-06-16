@@ -1,51 +1,41 @@
 function openSocket() {
 	socket = io();
 
-	socket.on('getID', function(data) {
-		if (!player)
-			player = new Player(data);
-		else
-			player.id = data;
-		info = {
-			id: player.id,
-			x: player.sprite.getX(),
-			y: player.sprite.getY(),
-			rotation: player.sprite.getRotation(),
-			//tint: player.sprite.getTint(),
-			type: player.sprite.type
-		};
-		socket.emit('initialize', info);
+	socket.on('initialize', function(data) {
+
+		id = data;
+
+		var bg = PIXI.Sprite.fromImage('assets/levels/level2.png');
+		app.stage.addChild(bg);
+		socket.emit('level', '1');
 
 		socket.on('create', function(data) {
 			for (var i in data) {
-				if (i != player.id && !remotePlayers[i]) {
+				if (i != id && !players[i]) {
 					var newTruck = new Truck(data[i].type);
 					newTruck.spawnAt(data[i].x, data[i].y);
 					newTruck.setRotation(data[i].rotation);
-					//newTruck.setTint(data[i].tint);
-					remotePlayers[i] = newTruck;
+					players[i] = newTruck;
+				} else if (i == id) {
+					if (!player) {
+						player = new Truck(data[i].type);
+						player.spawnAt(data[i].x, data[i].y);
+						players[data[i].id] = player;
+					}
 				}
 			}
 
 			socket.on('update', function(data) {
-				if (remotePlayers[data.id]) {
-					remotePlayers[data.id].setPos(data.x, data.y);
-					remotePlayers[data.id].setRotation(data.rotation);
+				if (players[data.id]) {
+					players[data.id].setPos(data.x, data.y);
+					players[data.id].setRotation(data.rotation);
 				}
-				/*for (var i in data) {
-					if (i != player.id) {
-						if (remotePlayers[i]) {
-							remotePlayers[i].setPos(data[i].x, data[i].y);
-							remotePlayers[i].setRotation(data[i].rotation);
-						}
-					}
-				}*/
 			});
 
 			socket.on('destroy', function(data) {
-				if (remotePlayers[data]) {
-					remotePlayers[data].removeTruck();
-					delete remotePlayers[data];
+				if (players[data]) {
+					players[data].removeTruck();
+					delete players[data];
 				}
 			});
 		});

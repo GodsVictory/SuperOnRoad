@@ -9,86 +9,54 @@ function setupInput() {
     var downArrow = keyboard(40);
     var rightArrow = keyboard(39);
     w.press = function() {
-        pressForward();
+        socket.emit('update', 'pressForward');
     }
     w.release = function() {
-        releaseForward();
+        socket.emit('update', 'releaseForward');
     }
     a.press = function() {
-        pressLeft();
+        socket.emit('update', 'pressLeft');
     }
     a.release = function() {
-        releaseLeft();
+        socket.emit('update', 'releaseLeft');
     }
     s.press = function() {
-        pressBack();
+        socket.emit('update', 'pressBack');
     }
     s.release = function() {
-        releaseBack();
+        socket.emit('update', 'releaseBack');
     }
     d.press = function() {
-        pressRight();
+        socket.emit('update', 'pressRight');
     }
     d.release = function() {
-        releaseRight();
+        socket.emit('update', 'releaseRight');
     }
     upArrow.press = function() {
-        pressForward();
+        socket.emit('update', 'pressForward');
     }
     upArrow.release = function() {
-        releaseForward();
+        socket.emit('update', 'releaseForward');
     }
     leftArrow.press = function() {
-        pressLeft();
+        socket.emit('update', 'pressLeft');
     }
     leftArrow.release = function() {
-        releaseLeft();
+        socket.emit('update', 'releaseLeft');
     }
     downArrow.press = function() {
-        pressBack();
+        socket.emit('update', 'pressBack');
     }
     downArrow.release = function() {
-        releaseBack();
+        socket.emit('update', 'releaseBack');
     }
     rightArrow.press = function() {
-        pressRight();
+        socket.emit('update', 'pressRight');
     }
     rightArrow.release = function() {
-        releaseRight();
+        socket.emit('update', 'releaseRight');
     }
     space.press = function() {
-        player.boost();
-    }
-
-    function pressForward() {
-        player.pressForward();
-    }
-
-    function pressLeft() {
-        player.pressLeft();
-    }
-
-    function pressBack() {
-        player.pressBack();
-    }
-
-    function pressRight() {
-        player.pressRight();
-    }
-
-    function releaseForward() {
-        player.releaseForward();
-    }
-
-    function releaseLeft() {
-        player.releaseLeft();
-    }
-
-    function releaseBack() {
-        player.releaseBack();
-    }
-
-    function releaseRight() {
-        player.releaseRight();
+        socket.emit('update', 'boost');
     }
 }
