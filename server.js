@@ -14,7 +14,6 @@ var sprites = ['ambulance', 'audi', 'black_viper', 'car', 'mini_truck', 'mini_va
 var tileSize = 5;
 
 io.on('connection', function(socket) {
-
 	socket.emit('initialize', socket.id);
 
 	socket.on('disconnect', function() {
@@ -23,7 +22,8 @@ io.on('connection', function(socket) {
 	});
 
 	socket.on('key', function(key) {
-		players[socket.id].input(key);
+		if (players[socket.id])
+			players[socket.id].input(key);
 	});
 
 	socket.on('level', function(data) {

@@ -1,20 +1,10 @@
 var app;
 var socket;
-var id;
 var mobile;
-var level;
-var player;
-var tileSize = 5;
 var players = {};
 
 window.onload = function start() {
-	openSocket();
-
 	PIXI.SCALE_MODES.DEFAULT = PIXI.SCALE_MODES.NEAREST;
-
-	if (isMobile.any)
-		setupMobile();
-
 	app = new PIXI.Application(800, 600, {
 		antialias: true
 	});
@@ -23,5 +13,10 @@ window.onload = function start() {
 	app.renderer.view.style.top = 0;
 	app.renderer.view.style.left = 0;
 
+	openSocket();
+
 	setupInput();
+
+	if (isMobile.any)
+		setupMobile();
 }
