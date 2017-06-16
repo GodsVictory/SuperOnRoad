@@ -29,12 +29,6 @@ function Truck(type) {
     this.removeTruck = function() {
         this.truck.destroy();
     }
-    this.setTint = function(tint) {
-        this.truck.tint = tint;
-    }
-    this.getTint = function() {
-        return this.truck.tint;
-    }
     this.getInfo = function() {
         return {
             x: this.getX(),
