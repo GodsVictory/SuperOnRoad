@@ -10,41 +10,23 @@ function setupMobile() {
 	mobile.renderer.view.style.left = 0;
 
 	var arrowUp = new Arrow(150, 100, 0);
-	arrowUp.arrow.on('pointerdown', function(e) {
-		socket.emit('update', 'pressForward');
-	});
-	arrowUp.arrow.on('pointerup', function(e) {
-		socket.emit('update', 'releaseForward');
-	});
+	arrowUp.arrow.on('pointerdown', pressForward);
+	arrowUp.arrow.on('pointerup', releaseForward);
 
 	var arrowDown = new Arrow(150, 300, 1);
-	arrowDown.arrow.on('pointerdown', function(e) {
-		socket.emit('update', 'pressBack');
-	});
-	arrowDown.arrow.on('pointerup', function(e) {
-		socket.emit('update', 'releaseBack');
-	});
+	arrowDown.arrow.on('pointerdown', pressBack);
+	arrowDown.arrow.on('pointerup', releaseBack);
 
 	var arrowLeft = new Arrow(500, 300, 1.5);
-	arrowLeft.arrow.on('pointerdown', function(e) {
-		socket.emit('update', 'pressLeft');
-	});
-	arrowLeft.arrow.on('pointerup', function(e) {
-		socket.emit('update', 'releaseLeft');
-	});
+	arrowLeft.arrow.on('pointerdown', pressLeft);
+	arrowLeft.arrow.on('pointerup', releaseLeft);
 
 	var arrowRight = new Arrow(700, 300, .5);
-	arrowRight.arrow.on('pointerdown', function(e) {
-		socket.emit('update', 'pressRight');
-	});
-	arrowRight.arrow.on('pointerup', function(e) {
-		socket.emit('update', 'releaseRight');
-	});
+	arrowRight.arrow.on('pointerdown', pressRight);
+	arrowRight.arrow.on('pointerup', releaseRight);
 
 	var boost = new Arrow(600, 100, 0);
-	boost.arrow.on('pointerdown', function(e) {
-		socket.emit('update', 'boost');
-	});
+	boost.arrow.on('pointerdown', boost);
 
 	function Arrow(x, y, r) {
 		this.arrow = PIXI.Sprite.fromImage('assets/interface/arrow.png');

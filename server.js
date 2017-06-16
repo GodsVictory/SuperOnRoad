@@ -22,8 +22,8 @@ io.on('connection', function(socket) {
 		io.emit('destroy', socket.id);
 	});
 
-	socket.on('update', function(data) {
-		players[socket.id].input(data);
+	socket.on('key', function(key) {
+		players[socket.id].input(key);
 	});
 
 	socket.on('level', function(data) {

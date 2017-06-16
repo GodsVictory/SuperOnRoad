@@ -1,62 +1,59 @@
 function setupInput() {
-    var w = keyboard(87);
-    var a = keyboard(65);
-    var s = keyboard(83);
-    var d = keyboard(68);
-    var space = keyboard(32);
-    var upArrow = keyboard(38);
-    var leftArrow = keyboard(37);
-    var downArrow = keyboard(40);
-    var rightArrow = keyboard(39);
-    w.press = function() {
-        socket.emit('update', 'pressForward');
+    document.onkeydown = function(event) {
+        if (event.keyCode == 87 || event.keyCode == 38)
+            pressForward();
+        else if (event.keyCode == 83 || event.keyCode == 40)
+            pressBack();
+        else if (event.keyCode == 65 || event.keyCode == 37)
+            pressLeft();
+        else if (event.keyCode == 68 || event.keyCode == 39)
+            pressRight();
+        else if (event.keyCode == 32)
+            boost();
+
     }
-    w.release = function() {
-        socket.emit('update', 'releaseForward');
+    document.onkeyup = function(event) {
+        if (event.keyCode == 87 || event.keyCode == 38)
+            releaseForward();
+        else if (event.keyCode == 83 || event.keyCode == 40)
+            releaseBack();
+        else if (event.keyCode == 65 || event.keyCode == 37)
+            releaseLeft();
+        else if (event.keyCode == 68 || event.keyCode == 39)
+            releaseRight();
+
     }
-    a.press = function() {
-        socket.emit('update', 'pressLeft');
-    }
-    a.release = function() {
-        socket.emit('update', 'releaseLeft');
-    }
-    s.press = function() {
-        socket.emit('update', 'pressBack');
-    }
-    s.release = function() {
-        socket.emit('update', 'releaseBack');
-    }
-    d.press = function() {
-        socket.emit('update', 'pressRight');
-    }
-    d.release = function() {
-        socket.emit('update', 'releaseRight');
-    }
-    upArrow.press = function() {
-        socket.emit('update', 'pressForward');
-    }
-    upArrow.release = function() {
-        socket.emit('update', 'releaseForward');
-    }
-    leftArrow.press = function() {
-        socket.emit('update', 'pressLeft');
-    }
-    leftArrow.release = function() {
-        socket.emit('update', 'releaseLeft');
-    }
-    downArrow.press = function() {
-        socket.emit('update', 'pressBack');
-    }
-    downArrow.release = function() {
-        socket.emit('update', 'releaseBack');
-    }
-    rightArrow.press = function() {
-        socket.emit('update', 'pressRight');
-    }
-    rightArrow.release = function() {
-        socket.emit('update', 'releaseRight');
-    }
-    space.press = function() {
-        socket.emit('update', 'boost');
-    }
+
+}
+
+function pressForward() {
+    socket.emit('key', 'pressForward');
+}
+
+function releaseForward() {
+    socket.emit('key', 'releaseForward');
+}
+
+function pressBack() {
+    socket.emit('key', 'pressBack');
+}
+
+function releaseBack() {
+    socket.emit('key', 'releaseBack');
+}
+
+function pressLeft() {
+    socket.emit('key', 'pressLeft');
+}
+
+function releaseLeft() {
+    socket.emit('key', 'releaseLeft');
+}
+
+function pressRight() {
+    socket.emit('key', 'pressRight');
+}
+
+function releaseRight() {
+    socket.emit('key', 'releaseRight');
 }
