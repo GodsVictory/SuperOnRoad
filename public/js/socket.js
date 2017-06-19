@@ -2,6 +2,8 @@ function openSocket() {
 	socket = io();
 
 	socket.on('initialize', function(data) {
+		id = data;
+
 		for (var i in players) {
 			players[i].removeTruck();
 			delete players[i];
@@ -14,7 +16,10 @@ function openSocket() {
 
 	socket.on('create', function(data) {
 		for (var i in data) {
-			if (!players[i]) {
+			if (i == id) {
+				if (!player)
+					player = new Player(data[i].x, data[i].y, data[i].rotation, data[i].type, data[i].level.bounds);
+			} else if (!players[i]) {
 				var truck = new Truck(data[i].type);
 				truck.spawnAt(data[i].x, data[i].y);
 				truck.setRotation(data[i].rotation);
@@ -24,20 +29,24 @@ function openSocket() {
 	});
 
 	socket.on('update', function(data) {
-		queueMove[data.id] = {
-			id: data.id,
-			x: data.x,
-			y: data.y,
-			rotation: data.rotation
-		};
-		//players[data.id].setPos(data.x, data.y);
-		//players[data.id].setRotation(data.rotation);
+		if (data.id == id) {
+			player.truck.setPos(data.x, data.y);
+			player.truck.setRotation(data.rotation);
+		} else {
+			queueMove[data.id] = {
+				id: data.id,
+				x: data.x,
+				y: data.y,
+				rotation: data.rotation
+			};
+		}
 	});
 
 	socket.on('destroy', function(id) {
 		if (players[id]) {
 			players[id].removeTruck();
 			delete players[id];
+			delete queueMove[id];
 		}
 	});
 };
