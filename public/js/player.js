@@ -1,8 +1,8 @@
 function Player(x, y, rotation, type, levelBounds) {
 	this.truck = new Truck(type);
 	this.truck.spawnAt(200, 150);
-	this.speed = 300;
-	this.turn = 3;
+	this.speed = 100;
+	this.turn = 1;
 	this.x = x;
 	this.y = y;
 	this.rotation = rotation;
