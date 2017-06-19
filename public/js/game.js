@@ -48,13 +48,15 @@ window.onload = function start() {
 						players[i].setRotation(queueMove[i].rotation);
 					}
 				} else {
-					players[i].setPos(
+					players[i].setPos(queueMove[i].x, queueMove[i].y);
+					players[i].setRotation(queueMove[i].rotation);
+					/*players[i].setPos(
 						lerp(players[i].getX(), queueMove[i].x, lerpMag),
 						lerp(players[i].getY(), queueMove[i].y, lerpMag)
 					);
 					players[i].setRotation(
 						lerp(players[i].getRotation(), queueMove[i].rotation, lerpMag)
-					);
+					);*/
 				}
 			}
 			startTime = Date.now() + frameDuration;
