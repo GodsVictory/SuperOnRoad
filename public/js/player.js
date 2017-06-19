@@ -58,8 +58,6 @@ function Player(x, y, rotation, type, levelBounds) {
 
 			var x = this.truck.getX() + (this.forward - this.back) * this.boostVal * delta * Math.sin(this.truck.getRotation());
 			var y = this.truck.getY() - (this.forward - this.back) * this.boostVal * delta * Math.cos(this.truck.getRotation());
-			//x = lerp(this.truck.getX(), x, lerpMag);
-			//y = lerp(this.truck.getY(), y, lerpMag);
 			if (this.levelBounds[Math.round(x / tileSize) + "," + Math.round(y / tileSize)])
 				this.truck.setPos(x, y);
 		}

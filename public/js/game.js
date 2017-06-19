@@ -46,6 +46,7 @@ window.onload = function start() {
 						console.log('syncing');
 						players[i].setPos(queueMove[i].x, queueMove[i].y);
 						players[i].setRotation(queueMove[i].rotation);
+						player.truck.removeTruck();
 					}
 				} else {
 					players[i].setPos(queueMove[i].x, queueMove[i].y);
