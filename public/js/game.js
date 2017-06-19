@@ -44,13 +44,8 @@ window.onload = function start() {
 						players[i].getY() <= queueMove[i].y - 10 && players[i].getY() >= queueMove[i].y + 10 ||
 						players[i].getRotation() <= queueMove[i].rotation - .1 && players[i].getRotation() >= queueMove[i].rotation + .1) {
 						console.log('syncing');
-						players[i].setPos(
-							lerp(players[i].getX(), queueMove[i].x, lerpMag),
-							lerp(players[i].getY(), queueMove[i].y, lerpMag)
-						);
-						players[i].setRotation(
-							lerp(players[i].getRotation(), queueMove[i].rotation, lerpMag)
-						);
+						players[i].setPos(queueMove[i].x, queueMove[i].y);
+						players[i].setRotation(queueMove[i].rotation);
 					}
 				} else {
 					players[i].setPos(
