@@ -3,6 +3,7 @@ var socket;
 var mobile;
 var players = {};
 var queueMove = {};
+var lerpMag = .25;
 
 window.onload = function start() {
 	PIXI.SCALE_MODES.DEFAULT = PIXI.SCALE_MODES.NEAREST;
@@ -23,11 +24,11 @@ window.onload = function start() {
 	ticker.add((deltaTime) => {
 		for (var i in queueMove) {
 			players[i].setPos(
-				lerp(players[i].getX(), queueMove[i].x, .25),
-				lerp(players[i].getY(), queueMove[i].y, .25)
+				lerp(players[i].getX(), queueMove[i].x, lerpMag),
+				lerp(players[i].getY(), queueMove[i].y, lerpMag)
 			);
 			players[i].setRotation(
-				lerp(players[i].getRotation(), queueMove[i].rotation, .25)
+				lerp(players[i].getRotation(), queueMove[i].rotation, lerpMag)
 			);
 		}
 	});

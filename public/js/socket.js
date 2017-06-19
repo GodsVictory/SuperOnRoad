@@ -30,7 +30,6 @@ function openSocket() {
 			y: data.y,
 			rotation: data.rotation
 		};
-		console.log(data.id);
 		//players[data.id].setPos(data.x, data.y);
 		//players[data.id].setRotation(data.rotation);
 	});
