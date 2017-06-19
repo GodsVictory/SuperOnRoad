@@ -3,7 +3,7 @@ var socket;
 var mobile;
 var players = {};
 var queueMove = {};
-var lerpMag = .25;
+var lerpMag = .05;
 
 window.onload = function start() {
 	PIXI.SCALE_MODES.DEFAULT = PIXI.SCALE_MODES.NEAREST;

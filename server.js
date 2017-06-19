@@ -109,7 +109,7 @@ const id = gameloop.setGameLoop(function(delta) {
 			});
 		}
 	}
-}, 1000 / 60);
+}, 1000 / 10);
 
 
 function getRandomInt(min, max) {
