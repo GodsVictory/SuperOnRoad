@@ -5,7 +5,7 @@ var player;
 var mobile;
 var players = {};
 var queueMove = {};
-var lerpMag = .1;
+var lerpMag = .3;
 var tileSize = 5;
 
 window.onload = function start() {
