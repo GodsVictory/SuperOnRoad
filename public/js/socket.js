@@ -19,6 +19,7 @@ function openSocket() {
 			if (i == id) {
 				if (!player)
 					player = new Player(data[i].x, data[i].y, data[i].rotation, data[i].type, data[i].level.bounds);
+				players[i] = player.truck;
 			} else if (!players[i]) {
 				var truck = new Truck(data[i].type);
 				truck.spawnAt(data[i].x, data[i].y);
@@ -29,17 +30,12 @@ function openSocket() {
 	});
 
 	socket.on('update', function(data) {
-		if (data.id == id) {
-			player.truck.setPos(data.x, data.y);
-			player.truck.setRotation(data.rotation);
-		} else {
-			queueMove[data.id] = {
-				id: data.id,
-				x: data.x,
-				y: data.y,
-				rotation: data.rotation
-			};
-		}
+		queueMove[data.id] = {
+			id: data.id,
+			x: data.x,
+			y: data.y,
+			rotation: data.rotation
+		};
 	});
 
 	socket.on('destroy', function(id) {
