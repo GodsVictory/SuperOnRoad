@@ -39,19 +39,6 @@ window.onload = function start() {
 				player.update(delta);
 
 			for (var i in queueMove) {
-				/*if (i == id) {
-					if (players[i].getX() <= queueMove[i].x - 5 || players[i].getX() >= queueMove[i].x + 5 ||
-						players[i].getY() <= queueMove[i].y - 5 || players[i].getY() >= queueMove[i].y + 5 ||
-						players[i].getRotation() <= queueMove[i].rotation - .1 || players[i].getRotation() >= queueMove[i].rotation + .1) {
-						players[i].setPos(
-							lerp(players[i].getX(), queueMove[i].x, lerpMag),
-							lerp(players[i].getY(), queueMove[i].y, lerpMag)
-						);
-						players[i].setRotation(
-							lerp(players[i].getRotation(), queueMove[i].rotation, lerpMag)
-						);
-					}
-				} else {*/
 				players[i].setPos(
 					lerp(players[i].getX(), queueMove[i].x, lerpMag),
 					lerp(players[i].getY(), queueMove[i].y, lerpMag)
@@ -59,7 +46,6 @@ window.onload = function start() {
 				players[i].setRotation(
 					lerp(players[i].getRotation(), queueMove[i].rotation, lerpMag)
 				);
-				//}
 			}
 			startTime = Date.now() + frameDuration;
 		}
