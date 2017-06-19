@@ -1,14 +1,4 @@
 function setupMobile() {
-
-	mobile = new PIXI.Application(800, 600, {
-		backgroundColor: 0xFFFFFF,
-		antialias: true
-	});
-	document.body.appendChild(mobile.view);
-	mobile.renderer.view.style.position = 'absolute';
-	mobile.renderer.view.style.top = 600;
-	mobile.renderer.view.style.left = 0;
-
 	var arrowUp = new Arrow(150, 100, 0);
 	arrowUp.arrow.on('pointerdown', pressForward);
 	arrowUp.arrow.on('pointerup', releaseForward);
@@ -35,9 +25,8 @@ function setupMobile() {
 		this.arrow.anchor.set(0.5);
 		this.arrow.rotation = Math.PI * r;
 		this.arrow.x = x;
-		this.arrow.y = y;
-		mobile.stage.addChild(this.arrow);
+		this.arrow.y = y + 600;
+		app.stage.addChild(this.arrow);
 		this.arrow.interactive = true;
 	}
-
 }

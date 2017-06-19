@@ -10,7 +10,8 @@ var tileSize = 5;
 
 window.onload = function start() {
 	PIXI.SCALE_MODES.DEFAULT = PIXI.SCALE_MODES.NEAREST;
-	app = new PIXI.Application(800, 600, {
+	app = new PIXI.Application(800, 1000, {
+		backgroundColor: 0xFFFFFF,
 		antialias: true
 	});
 	document.body.appendChild(app.view);
