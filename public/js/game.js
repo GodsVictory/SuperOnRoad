@@ -40,9 +40,9 @@ window.onload = function start() {
 
 			for (var i in queueMove) {
 				if (i == id) {
-					if (players[i].getX() <= queueMove[i].x - 10 && players[i].getX() >= queueMove[i].x + 10 ||
-						players[i].getY() <= queueMove[i].y - 10 && players[i].getY() >= queueMove[i].y + 10 ||
-						players[i].getRotation() <= queueMove[i].rotation - .1 && players[i].getRotation() >= queueMove[i].rotation + .1) {
+					if ((players[i].getX() <= queueMove[i].x - 10 && players[i].getX() >= queueMove[i].x + 10) ||
+						(players[i].getY() <= queueMove[i].y - 10 && players[i].getY() >= queueMove[i].y + 10) ||
+						(players[i].getRotation() <= queueMove[i].rotation - .1 && players[i].getRotation() >= queueMove[i].rotation + .1)) {
 						console.log('syncing');
 						players[i].setPos(queueMove[i].x, queueMove[i].y);
 						players[i].setRotation(queueMove[i].rotation);
