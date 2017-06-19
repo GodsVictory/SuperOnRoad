@@ -85,28 +85,31 @@ const gameloop = require('node-gameloop');
 let frameCount = 0;
 const id = gameloop.setGameLoop(function(delta) {
 	for (var i in players) {
-		players[i].rotation = players[i].rotation + (players[i].left + players[i].right) * delta;
-		if (players[i].boostStart > 0 && Date.now() - players[i].boostStart > players[i].boostDuration) {
-			players[i].boostVal = 1;
-			players[i].boostStart = 0;
-			players[i].boostEnd = Date.now();
-		}
-		var x = players[i].x + (players[i].forward - players[i].back) * players[i].boostVal * delta * Math.sin(players[i].rotation);
-		var y = players[i].y - (players[i].forward - players[i].back) * players[i].boostVal * delta * Math.cos(players[i].rotation);
-
-		if (players[i].level)
-			if (players[i].level.contains(x, y)) {
-				players[i].x = x;
-				players[i].y = y;
+		if (players[i].forward || players[i].back || players[i].left || players[i].right) {
+			players[i].rotation = players[i].rotation + (players[i].left + players[i].right) * delta;
+			if (players[i].boostStart > 0 && Date.now() - players[i].boostStart > players[i].boostDuration) {
+				players[i].boostVal = 1;
+				players[i].boostStart = 0;
+				players[i].boostEnd = Date.now();
 			}
-		io.emit('update', {
-			id: players[i].id,
-			x: players[i].x,
-			y: players[i].y,
-			rotation: players[i].rotation
-		});
+
+			var x = players[i].x + (players[i].forward - players[i].back) * players[i].boostVal * delta * Math.sin(players[i].rotation);
+			var y = players[i].y - (players[i].forward - players[i].back) * players[i].boostVal * delta * Math.cos(players[i].rotation);
+			if (players[i].level)
+				if (players[i].level.contains(x, y)) {
+					players[i].x = x;
+					players[i].y = y;
+				}
+
+			io.emit('update', {
+				id: players[i].id,
+				x: players[i].x,
+				y: players[i].y,
+				rotation: players[i].rotation
+			});
+		}
 	}
-}, 1000 / 60);
+}, 1000 / 22);
 
 
 function getRandomInt(min, max) {

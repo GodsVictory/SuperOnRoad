@@ -24,10 +24,15 @@ function openSocket() {
 	});
 
 	socket.on('update', function(data) {
-		if (players[data.id]) {
-			players[data.id].setPos(data.x, data.y);
-			players[data.id].setRotation(data.rotation);
-		}
+		queueMove[data.id] = {
+			id: data.id,
+			x: data.x,
+			y: data.y,
+			rotation: data.rotation
+		};
+		console.log(data.id);
+		//players[data.id].setPos(data.x, data.y);
+		//players[data.id].setRotation(data.rotation);
 	});
 
 	socket.on('destroy', function(id) {
