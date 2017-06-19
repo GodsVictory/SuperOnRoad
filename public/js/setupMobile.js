@@ -1,32 +1,32 @@
 function setupMobile() {
-	var arrowUp = new Arrow(150, 100, 0);
-	arrowUp.arrow.on('pointerdown', pressForward);
-	arrowUp.arrow.on('pointerup', releaseForward);
+  var arrowUp = new Arrow(150, 100, 0);
+  arrowUp.arrow.on('pointerdown', pressForward);
+  arrowUp.arrow.on('pointerup', releaseForward);
 
-	var arrowDown = new Arrow(150, 300, 1);
-	arrowDown.arrow.on('pointerdown', pressBack);
-	arrowDown.arrow.on('pointerup', releaseBack);
+  var arrowDown = new Arrow(150, 300, 1);
+  arrowDown.arrow.on('pointerdown', pressBack);
+  arrowDown.arrow.on('pointerup', releaseBack);
 
-	var arrowLeft = new Arrow(500, 300, 1.5);
-	arrowLeft.arrow.on('pointerdown', pressLeft);
-	arrowLeft.arrow.on('pointerup', releaseLeft);
+  var arrowLeft = new Arrow(500, 300, 1.5);
+  arrowLeft.arrow.on('pointerdown', pressLeft);
+  arrowLeft.arrow.on('pointerup', releaseLeft);
 
-	var arrowRight = new Arrow(700, 300, .5);
-	arrowRight.arrow.on('pointerdown', pressRight);
-	arrowRight.arrow.on('pointerup', releaseRight);
+  var arrowRight = new Arrow(700, 300, .5);
+  arrowRight.arrow.on('pointerdown', pressRight);
+  arrowRight.arrow.on('pointerup', releaseRight);
 
-	var arrowBoost = new Arrow(600, 100, 0);
-	arrowBoost.arrow.on('pointerdown', boost);
+  var arrowBoost = new Arrow(600, 100, 0);
+  arrowBoost.arrow.on('pointerdown', boost);
 
-	function Arrow(x, y, r) {
-		this.arrow = PIXI.Sprite.fromImage('assets/interface/arrow.png');
-		this.arrow.width = 150;
-		this.arrow.height = 150;
-		this.arrow.anchor.set(0.5);
-		this.arrow.rotation = Math.PI * r;
-		this.arrow.x = x;
-		this.arrow.y = y + 600;
-		app.stage.addChild(this.arrow);
-		this.arrow.interactive = true;
-	}
+  function Arrow(x, y, r) {
+    this.arrow = PIXI.Sprite.fromImage('assets/interface/arrow.png');
+    this.arrow.width = 150;
+    this.arrow.height = 150;
+    this.arrow.anchor.set(0.5);
+    this.arrow.rotation = Math.PI * r;
+    this.arrow.x = x;
+    this.arrow.y = y + 600;
+    app.stage.addChild(this.arrow);
+    this.arrow.interactive = true;
+  }
 }
