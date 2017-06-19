@@ -40,24 +40,25 @@ window.onload = function start() {
 
 			for (var i in queueMove) {
 				if (i == id) {
-					if ((players[i].getX() <= queueMove[i].x - 10 && players[i].getX() >= queueMove[i].x + 10) ||
-						(players[i].getY() <= queueMove[i].y - 10 && players[i].getY() >= queueMove[i].y + 10) ||
-						(players[i].getRotation() <= queueMove[i].rotation - .1 && players[i].getRotation() >= queueMove[i].rotation + .1)) {
-						console.log('syncing');
-						players[i].setPos(queueMove[i].x, queueMove[i].y);
-						players[i].setRotation(queueMove[i].rotation);
-						player.truck.removeTruck();
+					if (players[i].getX() <= queueMove[i].x - 5 || players[i].getX() >= queueMove[i].x + 5 ||
+						players[i].getY() <= queueMove[i].y - 5 || players[i].getY() >= queueMove[i].y + 5 ||
+						players[i].getRotation() <= queueMove[i].rotation - .1 || players[i].getRotation() >= queueMove[i].rotation + .1) {
+						players[i].setPos(
+							lerp(players[i].getX(), queueMove[i].x, lerpMag),
+							lerp(players[i].getY(), queueMove[i].y, lerpMag)
+						);
+						players[i].setRotation(
+							lerp(players[i].getRotation(), queueMove[i].rotation, lerpMag)
+						);
 					}
 				} else {
-					players[i].setPos(queueMove[i].x, queueMove[i].y);
-					players[i].setRotation(queueMove[i].rotation);
-					/*players[i].setPos(
+					players[i].setPos(
 						lerp(players[i].getX(), queueMove[i].x, lerpMag),
 						lerp(players[i].getY(), queueMove[i].y, lerpMag)
 					);
 					players[i].setRotation(
 						lerp(players[i].getRotation(), queueMove[i].rotation, lerpMag)
-					);*/
+					);
 				}
 			}
 			startTime = Date.now() + frameDuration;
