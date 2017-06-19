@@ -25,8 +25,8 @@ function setupMobile() {
 	arrowRight.arrow.on('pointerdown', pressRight);
 	arrowRight.arrow.on('pointerup', releaseRight);
 
-	var boost = new Arrow(600, 100, 0);
-	boost.arrow.on('pointerdown', boost);
+	var arrowBoost = new Arrow(600, 100, 0);
+	arrowBoost.arrow.on('pointerdown', boost);
 
 	function Arrow(x, y, r) {
 		this.arrow = PIXI.Sprite.fromImage('assets/interface/arrow.png');
