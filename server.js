@@ -80,7 +80,6 @@ var Player = function(id, x, y, rotation, type, level) {
       }
   }
 }
-update();
 
 const gameloop = require('node-gameloop');
 let frameCount = 0;
