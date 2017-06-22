@@ -45,21 +45,21 @@ function Player(x, y, rotation, speed, turn, type, levelBounds) {
       seq: seq++
     };
     updates.push(update);
-    socket.emit('input', update);
     this.updatePos(update);
+    socket.emit('input', update);
   }
   this.updatePos = function(data) {
 
     if (this.boostStart == 0) {
       if (data.boost)
-        if (this.boostEnd == 0 || Date.now() - this.boostEnd >= this.boostCooldown) {
+        if (this.boostEnd == 0 || data.time - this.boostEnd >= this.boostCooldown) {
           this.boostVal = this.boostVel;
-          this.boostStart = Date.now();
+          this.boostStart = data.time;
         }
     } else {
-      if (Date.now() - this.boostStart >= this.boostDuration) {
+      if (data.time - this.boostStart >= this.boostDuration) {
         this.boostVal = 1;
-        this.boostEnd = Date.now();
+        this.boostEnd = data.time;
         this.boostStart = 0;
       }
     }

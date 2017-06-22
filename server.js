@@ -59,7 +59,7 @@ var Player = function(id, x, y, rotation, type, level) {
   this.updateData;
 }
 
-var tps = 10;
+var tps = 60;
 const gameloop = require('node-gameloop');
 const id = gameloop.setGameLoop(function(deltaTime) {
     var delta = tps * deltaTime;
@@ -86,9 +86,9 @@ const id = gameloop.setGameLoop(function(deltaTime) {
           }
         }
 
-        players[i].rotation = players[i].rotation + (-input.left + input.right) * players[i].turn * input.delta * delta;
-        var x = players[i].x + (input.forward - input.back) * players[i].speed * players[i].boostVal * Math.sin(players[i].rotation) * input.delta * delta;
-        var y = players[i].y - (input.forward - input.back) * players[i].speed * players[i].boostVal * Math.cos(players[i].rotation) * input.delta * delta;
+        players[i].rotation = players[i].rotation + (-input.left + input.right) * players[i].turn * input.delta;
+        var x = players[i].x + (input.forward - input.back) * players[i].speed * players[i].boostVal * Math.sin(players[i].rotation) * input.delta;
+        var y = players[i].y - (input.forward - input.back) * players[i].speed * players[i].boostVal * Math.cos(players[i].rotation) * input.delta;
         if (players[i].level)
           if (players[i].level.contains(x, y)) {
             players[i].x = x;
