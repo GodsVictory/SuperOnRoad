@@ -23,8 +23,7 @@ io.on('connection', function(socket) {
 
   socket.on('input', function(data) {
     if (players[socket.id]) {
-      //players[socket.id].inputs.push(data);
-      players[socket.id].input(data);
+      players[socket.id].inputs.push(data);
       players[socket.id].seq++;
     }
   });
@@ -38,8 +37,8 @@ io.on('connection', function(socket) {
 
 var Player = function(id, x, y, rotation, type, level) {
   this.id = id;
-  this.speed = 300;
-  this.turn = 3;
+  this.speed = 5;
+  this.turn = .05;
   this.x = x;
   this.y = y;
   this.rotation = rotation;
@@ -57,12 +56,6 @@ var Player = function(id, x, y, rotation, type, level) {
   this.boostEnd = 0;
   this.inputs = [];
   this.seq = 0;
-  this.input = function(data) {
-    this.forward = data.forward;
-    this.back = data.back;
-    this.left = data.left;
-    this.right = data.right;
-  }
   this.boost = function() {
     if (this.boostStart == 0)
       if (this.boostEnd == 0 || Date.now() - this.boostEnd >= this.boostCooldown) {
@@ -73,34 +66,57 @@ var Player = function(id, x, y, rotation, type, level) {
 }
 
 const gameloop = require('node-gameloop');
-let frameCount = 0;
-const id = gameloop.setGameLoop(function(delta) {
-  for (var i in players) {
-    players[i].rotation = players[i].rotation + (-players[i].left + players[i].right) * players[i].turn * delta;
+const id = gameloop.setGameLoop(function(deltaTime) {
+    var delta = .1 / deltaTime;
+    for (var i in players) {
+      var len = players[i].inputs.length;
+      var forward = 0;
+      var back = 0;
+      var left = 0;
+      var right = 0;
+      for (var j = 0; j < len; j++) {
+        var input = players[i].inputs.shift();
 
-    if (players[i].boostStart > 0 && Date.now() - players[i].boostStart > players[i].boostDuration) {
-      players[i].boostVal = 1;
-      players[i].boostStart = 0;
-      players[i].boostEnd = Date.now();
-    }
+        if (players[i].boostStart == 0) {
+          if (input.boost)
+            if (players[i].boostEnd == 0 || Date.now() - players[i].boostEnd >= players[i].boostCooldown) {
+              players[i].boostVal = players[i].boostVel;
+              players[i].boostStart = Date.now();
+            }
+        } else {
+          if (Date.now() - players[i].boostStart >= players[i].boostDuration) {
+            players[i].boostVal = 1;
+            players[i].boostEnd = Date.now();
+            players[i].boostStart = 0;
+          }
+        }
 
-    var x = players[i].x + (players[i].forward - players[i].back) * players[i].speed * Math.sin(players[i].rotation) * delta;
-    var y = players[i].y - (players[i].forward - players[i].back) * players[i].speed * Math.cos(players[i].rotation) * delta;
-    if (players[i].level)
-      if (players[i].level.contains(x, y)) {
-        players[i].x = x;
-        players[i].y = y;
+        players[i].rotation = players[i].rotation + (-input.left + input.right) * players[i].turn * input.delta * delta;
+
+        if (players[i].boostStart > 0 && Date.now() - players[i].boostStart > players[i].boostDuration) {
+          players[i].boostVal = 1;
+          players[i].boostStart = 0;
+          players[i].boostEnd = Date.now();
+        }
+
+        var x = players[i].x + (input.forward - input.back) * players[i].speed * players[i].boostVal * Math.sin(players[i].rotation) * input.delta * delta;
+        var y = players[i].y - (input.forward - input.back) * players[i].speed * players[i].boostVal * Math.cos(players[i].rotation) * input.delta * delta;
+        if (players[i].level)
+          if (players[i].level.contains(x, y)) {
+            players[i].x = x;
+            players[i].y = y;
+          }
       }
-
-    io.emit('update', {
-      id: players[i].id,
-      x: players[i].x,
-      y: players[i].y,
-      rotation: players[i].rotation,
-      seq: players[i].seq
-    });
-  }
-}, 1000 / 60);
+      io.emit('update', {
+        id: players[i].id,
+        x: players[i].x,
+        y: players[i].y,
+        rotation: players[i].rotation,
+        seq: players[i].seq
+      });
+    }
+  },
+  1000 / 10);
 
 
 function getRandomInt(min, max) {

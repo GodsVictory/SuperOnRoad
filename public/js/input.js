@@ -1,79 +1,82 @@
 function setupInput() {
-  window.onkeydown = function(event) {
-    event.preventDefault();
-    if (event.keyCode == 87 || event.keyCode == 38)
-      pressForward();
-    else if (event.keyCode == 83 || event.keyCode == 40)
-      pressBack();
-    else if (event.keyCode == 65 || event.keyCode == 37)
-      pressLeft();
-    else if (event.keyCode == 68 || event.keyCode == 39)
-      pressRight();
-    else if (event.keyCode == 32)
-      boost();
-  }
-  window.onkeyup = function(event) {
-    event.preventDefault();
-    if (event.keyCode == 87 || event.keyCode == 38)
-      releaseForward();
-    else if (event.keyCode == 83 || event.keyCode == 40)
-      releaseBack();
-    else if (event.keyCode == 65 || event.keyCode == 37)
-      releaseLeft();
-    else if (event.keyCode == 68 || event.keyCode == 39)
-      releaseRight();
+  if (!isMobile.any) {
+    forward = keyboard(['87', '38']);
+    back = keyboard(['83', '40']);
+    left = keyboard(['65', '37 ']);
+    right = keyboard(['68', '39']);
+    boost = keyboard(['32']);
+  } else {
+    forward = Arrow(150, 100, 0);
+    back = Arrow(150, 300, 1);
+    left = Arrow(500, 300, 1.5);
+    right = Arrow(700, 300, .5);
+    boost = Arrow(600, 100, 0);
   }
 }
 
-function pressForward() {
-  // socket.emit('key', 'pressForward');
-  player.forward = 1;
-  // player.input('pressForward');
+function keyboard(keyCode) {
+  var key = {};
+  key.code = keyCode;
+  key.isDown = false;
+  key.isUp = true;
+  key.press = undefined;
+  key.release = undefined;
+  //The `downHandler`
+  key.downHandler = function(event) {
+    for (var i = 0; i < key.code.length; i++)
+      if (event.keyCode == key.code[i]) {
+        if (key.isUp && key.press) key.press();
+        key.isDown = true;
+        key.isUp = false;
+      }
+    event.preventDefault();
+  };
+
+  //The `upHandler`
+  key.upHandler = function(event) {
+    for (var i = 0; i < key.code.length; i++)
+      if (event.keyCode == key.code[i]) {
+        if (key.isDown && key.release) key.release();
+        key.isDown = false;
+        key.isUp = true;
+      }
+    event.preventDefault();
+  };
+
+  //Attach event listeners
+  window.addEventListener(
+    "keydown", key.downHandler.bind(key), false
+  );
+  window.addEventListener(
+    "keyup", key.upHandler.bind(key), false
+  );
+  return key;
 }
 
-function releaseForward() {
-  // socket.emit('key', 'releaseForward');
-  player.forward = 0;
-  player.input('releaseForward');
-}
+function Arrow(x, y, r) {
+  var arrow = {};
+  arrow.sprite = PIXI.Sprite.fromImage('assets/interface/arrow.png');
+  arrow.sprite.width = 150;
+  arrow.sprite.height = 150;
+  arrow.sprite.anchor.set(0.5);
+  arrow.sprite.rotation = Math.PI * r;
+  arrow.sprite.x = x;
+  arrow.sprite.y = y + 600;
+  app.stage.addChild(arrow.sprite);
+  arrow.sprite.interactive = true;
+  arrow.isDown = false;
+  arrow.isUp = true;
+  arrow.press = undefined;
+  arrow.release = undefined;
 
-function pressBack() {
-  // socket.emit('key', 'pressBack');
-  player.back = 1;
-  player.input('pressBack');
-}
+  arrow.sprite.on('pointerdown', function() {
+    arrow.isDown = true;
+    arrow.isUp = false;
+  });
 
-function releaseBack() {
-  // socket.emit('key', 'releaseBack');
-  player.back = 0;
-  player.input('releaseBack');
-}
-
-function pressLeft() {
-  // socket.emit('key', 'pressLeft');
-  player.left = 1;
-  player.input('pressLeft');
-}
-
-function releaseLeft() {
-  // socket.emit('key', 'releaseLeft');
-  player.left = 0;
-  player.input('releaseLeft');
-}
-
-function pressRight() {
-  // socket.emit('key', 'pressRight');
-  player.right = 1;
-  player.input('pressRight');
-}
-
-function releaseRight() {
-  // socket.emit('key', 'releaseRight');
-  player.right = 0;
-  player.input('releaseRight');
-}
-
-function boost() {
-  // socket.emit('key', 'boost');
-  player.boost();
+  arrow.sprite.on('pointerup', function() {
+    arrow.isDown = false;
+    arrow.isUp = true;
+  });
+  return arrow;
 }

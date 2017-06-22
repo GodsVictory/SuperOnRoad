@@ -18,26 +18,28 @@ function Player(x, y, rotation, speed, turn, type, levelBounds) {
   this.boostCooldown = 3000;
   this.boostStart = 0;
   this.boostEnd = 0;
-  this.boost = function() {
-    if (this.boostStart == 0)
-      if (this.boostEnd == 0 || Date.now() - this.boostEnd >= this.boostCooldown) {
-        this.boostVal = this.boostVel;
-        this.boostStart = Date.now();
-      }
-  }
   this.update = function(delta) {
     if (player.truck.update) {
-      player.truck.setPos(player.truck.update.x, player.truck.update.y);
-      player.truck.setRotation(player.truck.update.rotation);
+      this.x = player.truck.update.x;
+      this.y = player.truck.update.y;
+      this.rotation = player.truck.update.rotation
       for (var j = player.truck.update.seq; j < seq; j++) {
         player.updatePos(updates[j]);
       }
     }
+
+    this.forward = forward.isDown ? 1 : 0;
+    this.back = back.isDown ? 1 : 0;
+    this.left = left.isDown ? 1 : 0;
+    this.right = right.isDown ? 1 : 0;
+    this.boost = boost.isDown ? 1 : 0;
+
     var update = {
       forward: this.forward,
       back: this.back,
       left: this.left,
       right: this.right,
+      boost: this.boost,
       delta: delta,
       time: Date.now(),
       seq: seq++
@@ -45,16 +47,34 @@ function Player(x, y, rotation, speed, turn, type, levelBounds) {
     updates.push(update);
     socket.emit('input', update);
     this.updatePos(update);
-    this.truck.setPos(this.x, this.y);
-    this.truck.setRotation(this.rotation);
   }
   this.updatePos = function(data) {
-    this.rotation = this.truck.getRotation() + (-data.left + data.right) * this.turn * data.delta;
-    var x = this.truck.getX() + (data.forward - data.back) * this.speed * Math.sin(this.truck.getRotation()) * data.delta;
-    var y = this.truck.getY() - (data.forward - data.back) * this.speed * Math.cos(this.truck.getRotation()) * data.delta;
+
+    if (this.boostStart == 0) {
+      if (data.boost)
+        if (this.boostEnd == 0 || Date.now() - this.boostEnd >= this.boostCooldown) {
+          this.boostVal = this.boostVel;
+          this.boostStart = Date.now();
+        }
+    } else {
+      if (Date.now() - this.boostStart >= this.boostDuration) {
+        this.boostVal = 1;
+        this.boostEnd = Date.now();
+        this.boostStart = 0;
+      }
+    }
+
+    this.rotation = this.rotation + (-data.left + data.right) * this.turn * data.delta;
+    var x = this.x + (data.forward - data.back) * this.speed * this.boostVal * Math.sin(this.rotation) * data.delta;
+    var y = this.y - (data.forward - data.back) * this.speed * this.boostVal * Math.cos(this.rotation) * data.delta;
     if (this.levelBounds[Math.round(x / tileSize) + "," + Math.round(y / tileSize)]) {
       this.x = x;
       this.y = y;
     }
+
+  }
+  this.show = function() {
+    this.truck.setPos(this.x, this.y);
+    this.truck.setRotation(this.rotation);
   }
 }

@@ -8,6 +8,7 @@ var lerpMag = .3;
 var tileSize = 5;
 var seq = 0;
 var updates = [];
+var forward, back, left, right, boost;
 
 window.onload = function start() {
   PIXI.SCALE_MODES.DEFAULT = PIXI.SCALE_MODES.NEAREST;
@@ -24,17 +25,14 @@ window.onload = function start() {
 
   setupInput();
 
-  update();
-
   var lastFrame = 0;
-
-  function update() {
-    requestAnimationFrame(update);
-    var delta = (Date.now() - lastFrame) / 1000;
-    lastFrame = Date.now();
-
-    if (player)
+  const ticker = new PIXI.ticker.Ticker();
+  ticker.stop();
+  ticker.add((delta) => {
+    if (player) {
       player.update(delta);
+      player.show();
+    }
 
     for (var i in players) {
       if (i != id) {
@@ -47,10 +45,8 @@ window.onload = function start() {
         );
       }
     }
-  }
-
-  if (isMobile.any)
-    setupMobile();
+  });
+  ticker.start();
 }
 
 function lerp(v0, v1, t) {
