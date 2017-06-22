@@ -14,6 +14,7 @@ function Player(x, y, rotation, speed, turn, type, levelBounds) {
   this.back = 0;
   this.left = 0;
   this.right = 0;
+  this.boost = 0;
   this.boostVel = 2;
   this.boostVal = 1;
   this.boostDuration = 1000;
@@ -21,6 +22,12 @@ function Player(x, y, rotation, speed, turn, type, levelBounds) {
   this.boostStart = 0;
   this.boostEnd = 0;
   this.update = function(delta) {
+    this.forward = forward.isDown ? 1 : 0;
+    this.back = back.isDown ? 1 : 0;
+    this.left = left.isDown ? 1 : 0;
+    this.right = right.isDown ? 1 : 0;
+    this.boost = boost.isDown ? 1 : 0;
+
     if (player.truck.update) {
       this.x = player.truck.update.x;
       this.y = player.truck.update.y;
@@ -29,12 +36,6 @@ function Player(x, y, rotation, speed, turn, type, levelBounds) {
         player.updatePos(this.updates[i]);
       }
     }
-
-    this.forward = forward.isDown ? 1 : 0;
-    this.back = back.isDown ? 1 : 0;
-    this.left = left.isDown ? 1 : 0;
-    this.right = right.isDown ? 1 : 0;
-    this.boost = boost.isDown ? 1 : 0;
 
     var update = {
       forward: this.forward,
