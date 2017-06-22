@@ -62,7 +62,6 @@ var tps = 60;
 const gameloop = require('node-gameloop');
 const id = gameloop.setGameLoop(function(deltaTime) {
     var delta = tps * deltaTime;
-    console.log(delta, deltaTime);
     for (var i in players) {
       var len = players[i].inputs.length;
       var forward = 0;
@@ -95,13 +94,6 @@ const id = gameloop.setGameLoop(function(deltaTime) {
             players[i].y = y;
           }
       }
-      // io.emit('update', {
-      //   id: players[i].id,
-      //   x: players[i].x,
-      //   y: players[i].y,
-      //   rotation: players[i].rotation,
-      //   seq: players[i].seq
-      // });
     }
     io.emit('update', players);
   },
