@@ -4,7 +4,7 @@ var id;
 var player;
 var mobile;
 var players = [];
-var lerpMag = .3;
+var lerpMag = .05;
 var tileSize = 5;
 var seq = 0;
 var updates = [];
