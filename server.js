@@ -66,6 +66,7 @@ const id = gameloop.setGameLoop(function(deltaTime) {
       var len = players[i].inputs.length;
       for (var j = 0; j < len; j++) {
         var input = players[i].inputs.shift();
+        players[i].seq = input.seq;
 
         if (players[i].boostStart == 0) {
           if (input.boost)
@@ -90,7 +91,6 @@ const id = gameloop.setGameLoop(function(deltaTime) {
             players[i].y = y;
           }
 
-        players[i].seq = input.seq;
       }
       players[i].updateData = {
         id: i,

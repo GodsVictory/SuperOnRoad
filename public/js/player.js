@@ -65,6 +65,7 @@ function Player(x, y, rotation, speed, turn, type, levelBounds) {
       }
     }
 
+
     this.rotation = this.rotation + (-data.left + data.right) * this.turn * data.delta;
     var x = this.x + (data.forward - data.back) * this.speed * this.boostVal * Math.sin(this.rotation) * data.delta;
     var y = this.y - (data.forward - data.back) * this.speed * this.boostVal * Math.cos(this.rotation) * data.delta;
