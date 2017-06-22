@@ -58,9 +58,11 @@ var Player = function(id, x, y, rotation, type, level) {
   this.seq = 0;
 }
 
+var tps = 60;
 const gameloop = require('node-gameloop');
 const id = gameloop.setGameLoop(function(deltaTime) {
-    var delta = .1 / deltaTime;
+    var delta = tps * deltaTime;
+    console.log(delta, deltaTime);
     for (var i in players) {
       var len = players[i].inputs.length;
       var forward = 0;
@@ -103,7 +105,7 @@ const id = gameloop.setGameLoop(function(deltaTime) {
     }
     io.emit('update', players);
   },
-  1000 / 10);
+  1000 / tps);
 
 
 function getRandomInt(min, max) {
