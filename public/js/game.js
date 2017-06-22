@@ -35,7 +35,7 @@ window.onload = function start() {
     }
 
     for (var i in players) {
-      if (i != id) {
+      if (players[i].update && i != id) {
         players[i].setPos(
           lerp(players[i].getX(), players[i].update.x, lerpMag),
           lerp(players[i].getY(), players[i].update.y, lerpMag)
