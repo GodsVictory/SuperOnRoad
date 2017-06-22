@@ -99,7 +99,8 @@ const id = gameloop.setGameLoop(function(deltaTime) {
         id: i,
         x: players[i].x,
         y: players[i].y,
-        rotation: players[i].rotation
+        rotation: players[i].rotation,
+        seq: players[i].seq
       };
     }
     var update = [];
