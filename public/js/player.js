@@ -42,7 +42,7 @@ function Player(x, y, rotation, speed, turn, type, levelBounds) {
       boost: this.boost,
       delta: delta,
       time: Date.now(),
-      seq: ++seq
+      seq: seq++
     };
     updates.push(update);
     this.updatePos(update);

@@ -24,7 +24,6 @@ io.on('connection', function(socket) {
   socket.on('input', function(data) {
     if (players[socket.id]) {
       players[socket.id].inputs.push(data);
-      players[socket.id].seq++;
     }
   });
 
@@ -65,10 +64,6 @@ const id = gameloop.setGameLoop(function(deltaTime) {
     var delta = tps * deltaTime;
     for (var i in players) {
       var len = players[i].inputs.length;
-      var forward = 0;
-      var back = 0;
-      var left = 0;
-      var right = 0;
       for (var j = 0; j < len; j++) {
         var input = players[i].inputs.shift();
 
@@ -94,6 +89,8 @@ const id = gameloop.setGameLoop(function(deltaTime) {
             players[i].x = x;
             players[i].y = y;
           }
+
+        players[i].seq = input.seq;
       }
       players[i].updateData = {
         id: i,
