@@ -95,7 +95,7 @@ const id = gameloop.setGameLoop(function(deltaTime) {
           }
       }
     }
-    io.emit('update', players);
+    //io.emit('update', players);
   },
   1000 / tps);
 
