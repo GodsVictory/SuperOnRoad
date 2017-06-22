@@ -20,19 +20,19 @@ function Player(x, y, rotation, speed, turn, type, levelBounds) {
   this.boostEnd = 0;
   this.input = function(data) {
     if (data == 'pressForward')
-      this.forward = this.speed;
+      this.forward = 1;
     if (data == 'releaseForward')
       this.forward = 0;
     if (data == 'pressBack')
-      this.back = this.speed;
+      this.back = 1;
     if (data == 'releaseBack')
       this.back = 0;
     if (data == 'pressLeft')
-      this.left = -this.turn;
+      this.left = 1;
     if (data == 'releaseLeft')
       this.left = 0;
     if (data == 'pressRight')
-      this.right = this.turn;
+      this.right = 1;
     if (data == 'releaseRight')
       this.right = 0;
     if (data == 'boost')
@@ -47,19 +47,34 @@ function Player(x, y, rotation, speed, turn, type, levelBounds) {
   }
 
   this.update = function(delta) {
-    if (this.forward || this.back || this.left || this.right) {
-      this.truck.setRotation(this.truck.getRotation() + (this.left + this.right) * delta);
-
-      if (this.boostStart > 0 && Date.now() - this.boostStart > this.boostDuration) {
-        this.boostVal = 1;
-        this.boostStart = 0;
-        this.boostEnd = Date.now();
+    if (player.truck.update) {
+      player.truck.setPos(player.truck.update.x, player.truck.update.y);
+      player.truck.setRotation(player.truck.update.rotation);
+      for (var j = player.truck.update.seq; j < seq; j++) {
+        player.updatePos(updates[j]);
       }
-
-      var x = this.truck.getX() + (this.forward - this.back) * this.boostVal * delta * Math.sin(this.truck.getRotation());
-      var y = this.truck.getY() - (this.forward - this.back) * this.boostVal * delta * Math.cos(this.truck.getRotation());
-      if (this.levelBounds[Math.round(x / tileSize) + "," + Math.round(y / tileSize)])
-        this.truck.setPos(x, y);
     }
+    var update = {
+      forward: this.forward,
+      back: this.back,
+      left: this.left,
+      right: this.right,
+      delta: delta,
+      time: Date.now(),
+      seq: seq++
+    };
+    updates.push(update);
+    socket.emit('input', update);
+    this.updatePos(update);
+  }
+
+  this.updatePos = function(data) {
+
+    this.truck.setRotation(this.truck.getRotation() + (-data.left + data.right) * this.turn * data.delta);
+
+    var x = this.truck.getX() + (data.forward - data.back) * this.speed * Math.sin(this.truck.getRotation()) * data.delta;
+    var y = this.truck.getY() - (data.forward - data.back) * this.speed * Math.cos(this.truck.getRotation()) * data.delta;
+    if (this.levelBounds[Math.round(x / tileSize) + "," + Math.round(y / tileSize)])
+      this.truck.setPos(x, y);
   }
 }

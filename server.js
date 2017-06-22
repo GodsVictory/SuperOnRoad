@@ -21,9 +21,12 @@ io.on('connection', function(socket) {
     io.emit('destroy', socket.id);
   });
 
-  socket.on('key', function(key) {
-    if (players[socket.id])
-      players[socket.id].input(key);
+  socket.on('input', function(data) {
+    if (players[socket.id]) {
+      //players[socket.id].inputs.push(data);
+      players[socket.id].input(data);
+      players[socket.id].seq++;
+    }
   });
 
   socket.on('level', function(data) {
@@ -52,25 +55,13 @@ var Player = function(id, x, y, rotation, type, level) {
   this.boostCooldown = 3000;
   this.boostStart = 0;
   this.boostEnd = 0;
+  this.inputs = [];
+  this.seq = 0;
   this.input = function(data) {
-    if (data == 'pressForward')
-      this.forward = this.speed;
-    if (data == 'releaseForward')
-      this.forward = 0;
-    if (data == 'pressBack')
-      this.back = this.speed;
-    if (data == 'releaseBack')
-      this.back = 0;
-    if (data == 'pressLeft')
-      this.left = -this.turn;
-    if (data == 'releaseLeft')
-      this.left = 0;
-    if (data == 'pressRight')
-      this.right = this.turn;
-    if (data == 'releaseRight')
-      this.right = 0;
-    if (data == 'boost')
-      this.boost();
+    this.forward = data.forward;
+    this.back = data.back;
+    this.left = data.left;
+    this.right = data.right;
   }
   this.boost = function() {
     if (this.boostStart == 0)
@@ -85,29 +76,29 @@ const gameloop = require('node-gameloop');
 let frameCount = 0;
 const id = gameloop.setGameLoop(function(delta) {
   for (var i in players) {
-    if (players[i].forward || players[i].back || players[i].left || players[i].right) {
-      players[i].rotation = players[i].rotation + (players[i].left + players[i].right) * delta;
-      if (players[i].boostStart > 0 && Date.now() - players[i].boostStart > players[i].boostDuration) {
-        players[i].boostVal = 1;
-        players[i].boostStart = 0;
-        players[i].boostEnd = Date.now();
+    players[i].rotation = players[i].rotation + (-players[i].left + players[i].right) * players[i].turn * delta;
+
+    if (players[i].boostStart > 0 && Date.now() - players[i].boostStart > players[i].boostDuration) {
+      players[i].boostVal = 1;
+      players[i].boostStart = 0;
+      players[i].boostEnd = Date.now();
+    }
+
+    var x = players[i].x + (players[i].forward - players[i].back) * players[i].speed * Math.sin(players[i].rotation) * delta;
+    var y = players[i].y - (players[i].forward - players[i].back) * players[i].speed * Math.cos(players[i].rotation) * delta;
+    if (players[i].level)
+      if (players[i].level.contains(x, y)) {
+        players[i].x = x;
+        players[i].y = y;
       }
 
-      var x = players[i].x + (players[i].forward - players[i].back) * players[i].boostVal * delta * Math.sin(players[i].rotation);
-      var y = players[i].y - (players[i].forward - players[i].back) * players[i].boostVal * delta * Math.cos(players[i].rotation);
-      if (players[i].level)
-        if (players[i].level.contains(x, y)) {
-          players[i].x = x;
-          players[i].y = y;
-        }
-
-      io.emit('update', {
-        id: players[i].id,
-        x: players[i].x,
-        y: players[i].y,
-        rotation: players[i].rotation
-      });
-    }
+    io.emit('update', {
+      id: players[i].id,
+      x: players[i].x,
+      y: players[i].y,
+      rotation: players[i].rotation,
+      seq: players[i].seq
+    });
   }
 }, 1000 / 60);
 

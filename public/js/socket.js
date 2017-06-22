@@ -30,19 +30,14 @@ function openSocket() {
   });
 
   socket.on('update', function(data) {
-    queueMove[data.id] = {
-      id: data.id,
-      x: data.x,
-      y: data.y,
-      rotation: data.rotation
-    };
+    if (players[data.id])
+      players[data.id].update = data;
   });
 
   socket.on('destroy', function(id) {
     if (players[id]) {
       players[id].removeTruck();
       delete players[id];
-      delete queueMove[id];
     }
   });
 };

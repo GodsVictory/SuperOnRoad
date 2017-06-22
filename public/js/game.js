@@ -3,10 +3,11 @@ var socket;
 var id;
 var player;
 var mobile;
-var players = {};
-var queueMove = {};
+var players = [];
 var lerpMag = .3;
 var tileSize = 5;
+var seq = 0;
+var updates = [];
 
 window.onload = function start() {
   PIXI.SCALE_MODES.DEFAULT = PIXI.SCALE_MODES.NEAREST;
@@ -35,14 +36,16 @@ window.onload = function start() {
     if (player)
       player.update(delta);
 
-    for (var i in queueMove) {
-      players[i].setPos(
-        lerp(players[i].getX(), queueMove[i].x, lerpMag),
-        lerp(players[i].getY(), queueMove[i].y, lerpMag)
-      );
-      players[i].setRotation(
-        lerp(players[i].getRotation(), queueMove[i].rotation, lerpMag)
-      );
+    for (var i in players) {
+      if (i != id) {
+        players[i].setPos(
+          lerp(players[i].getX(), players[i].update.x, lerpMag),
+          lerp(players[i].getY(), players[i].update.y, lerpMag)
+        );
+        players[i].setRotation(
+          lerp(players[i].getRotation(), players[i].update.rotation, lerpMag)
+        );
+      }
     }
   }
 
