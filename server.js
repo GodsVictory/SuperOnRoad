@@ -56,6 +56,7 @@ var Player = function(id, x, y, rotation, type, level) {
   this.boostEnd = 0;
   this.inputs = [];
   this.seq = 0;
+  this.updateData;
 }
 
 var tps = 30;
@@ -94,8 +95,18 @@ const id = gameloop.setGameLoop(function(deltaTime) {
             players[i].y = y;
           }
       }
+      players[i].updateData = {
+        id: i,
+        x: players[i].x,
+        y: players[i].y,
+        rotation: players[i].rotation
+      };
     }
-    //io.emit('update', players);
+    var update = [];
+    for (var i in players) {
+      update.push(players[i].updateData);
+    }
+    io.emit('update', update);
   },
   1000 / tps);
 
