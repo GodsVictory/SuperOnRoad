@@ -31,7 +31,6 @@ window.onload = function start() {
   ticker.add((delta) => {
     if (player) {
       player.update(delta);
-      player.show();
     }
 
     for (var i in players) {
