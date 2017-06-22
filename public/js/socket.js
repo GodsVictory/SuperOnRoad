@@ -30,8 +30,9 @@ function openSocket() {
   });
 
   socket.on('update', function(data) {
-    if (players[data.id])
-      players[data.id].update = data;
+    for (var i in data)
+      if (players[data[i].id])
+        players[data[i].id].update = data[i];
   });
 
   socket.on('destroy', function(id) {

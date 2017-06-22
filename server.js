@@ -56,13 +56,6 @@ var Player = function(id, x, y, rotation, type, level) {
   this.boostEnd = 0;
   this.inputs = [];
   this.seq = 0;
-  this.boost = function() {
-    if (this.boostStart == 0)
-      if (this.boostEnd == 0 || Date.now() - this.boostEnd >= this.boostCooldown) {
-        this.boostVal = this.boostVel;
-        this.boostStart = Date.now();
-      }
-  }
 }
 
 const gameloop = require('node-gameloop');
@@ -92,13 +85,6 @@ const id = gameloop.setGameLoop(function(deltaTime) {
         }
 
         players[i].rotation = players[i].rotation + (-input.left + input.right) * players[i].turn * input.delta * delta;
-
-        if (players[i].boostStart > 0 && Date.now() - players[i].boostStart > players[i].boostDuration) {
-          players[i].boostVal = 1;
-          players[i].boostStart = 0;
-          players[i].boostEnd = Date.now();
-        }
-
         var x = players[i].x + (input.forward - input.back) * players[i].speed * players[i].boostVal * Math.sin(players[i].rotation) * input.delta * delta;
         var y = players[i].y - (input.forward - input.back) * players[i].speed * players[i].boostVal * Math.cos(players[i].rotation) * input.delta * delta;
         if (players[i].level)
@@ -107,14 +93,15 @@ const id = gameloop.setGameLoop(function(deltaTime) {
             players[i].y = y;
           }
       }
-      io.emit('update', {
-        id: players[i].id,
-        x: players[i].x,
-        y: players[i].y,
-        rotation: players[i].rotation,
-        seq: players[i].seq
-      });
+      // io.emit('update', {
+      //   id: players[i].id,
+      //   x: players[i].x,
+      //   y: players[i].y,
+      //   rotation: players[i].rotation,
+      //   seq: players[i].seq
+      // });
     }
+    io.emit('update', players);
   },
   1000 / 10);
 
