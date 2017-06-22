@@ -74,14 +74,14 @@ const id = gameloop.setGameLoop(function(deltaTime) {
 
         if (players[i].boostStart == 0) {
           if (input.boost)
-            if (players[i].boostEnd == 0 || Date.now() - players[i].boostEnd >= players[i].boostCooldown) {
+            if (players[i].boostEnd == 0 || input.time - players[i].boostEnd >= players[i].boostCooldown) {
               players[i].boostVal = players[i].boostVel;
-              players[i].boostStart = Date.now();
+              players[i].boostStart = input.time;
             }
         } else {
-          if (Date.now() - players[i].boostStart >= players[i].boostDuration) {
+          if (input.time - players[i].boostStart >= players[i].boostDuration) {
             players[i].boostVal = 1;
-            players[i].boostEnd = Date.now();
+            players[i].boostEnd = input.time;
             players[i].boostStart = 0;
           }
         }
