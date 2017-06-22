@@ -58,7 +58,7 @@ var Player = function(id, x, y, rotation, type, level) {
   this.seq = 0;
 }
 
-var tps = 60;
+var tps = 30;
 const gameloop = require('node-gameloop');
 const id = gameloop.setGameLoop(function(deltaTime) {
     var delta = tps * deltaTime;
