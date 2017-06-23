@@ -25,7 +25,7 @@ function Player(x, y, rotation, speed, turn, type, levelBounds) {
       this.y = updateData.y;
       this.rotation = updateData.rotation;
       for (var i = updateData.seq; i < this.seq; i++) {
-        console.log(this.updates[i].forward);
+        console.log(i);
         player.updatePos(this.updates[i]);
       }
     }
