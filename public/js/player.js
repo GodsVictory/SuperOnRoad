@@ -24,9 +24,9 @@ function Player(x, y, rotation, speed, turn, type, levelBounds) {
       this.x = updateData.x;
       this.y = updateData.y;
       this.rotation = updateData.rotation;
-      for (var i = updateData.seq; i < this.seq; i++) {
-        console.log('test');
-        console.log('asdf');
+      var len = this.seq;
+      for (var i = updateData.seq; i < len; i++) {
+        console.log(this.updates[i].forward);
         player.updatePos(this.updates[i]);
       }
     }
