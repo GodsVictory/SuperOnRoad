@@ -16,12 +16,12 @@ function Player(x, y, rotation, speed, turn, type, levelBounds) {
   this.boostCooldown = 3000;
   this.boostStart = 0;
   this.boostEnd = 0;
-  this.serverUpdate = function() {
-    console.log(player.truck.update.boost);
-    this.x = player.truck.update.x;
-    this.y = player.truck.update.y;
-    this.rotation = player.truck.update.rotation;
-    for (var i = player.truck.update.seq; i < this.seq; i++) {
+  this.serverUpdate = function(data) {
+    console.log(data.boost);
+    this.x = data.x;
+    this.y = data.y;
+    this.rotation = data.rotation;
+    for (var i = data.seq; i < this.seq; i++) {
       player.updatePos(this.updates[i]);
     }
   }

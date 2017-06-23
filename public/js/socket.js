@@ -34,7 +34,7 @@ function openSocket() {
       if (players[data[i].id]) {
         players[data[i].id].update = data[i];
         if (data[i].id == id) {
-          player.serverUpdate();
+          player.serverUpdate(data[i]);
         }
       }
   });
