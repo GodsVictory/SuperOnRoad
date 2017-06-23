@@ -28,14 +28,14 @@ function Player(x, y, rotation, speed, turn, type, levelBounds) {
     this.right = right.isDown ? 1 : 0;
     this.boost = boost.isDown ? 1 : 0;
 
-    // if (player.truck.update) {
-    //   this.x = player.truck.update.x;
-    //   this.y = player.truck.update.y;
-    //   this.rotation = player.truck.update.rotation;
-    //   for (var i = player.truck.update.seq + 1; i < this.seq; i++) {
-    //     player.updatePos(this.updates[i]);
-    //   }
-    // }
+    if (player.truck.update) {
+      this.x = player.truck.update.x;
+      this.y = player.truck.update.y;
+      this.rotation = player.truck.update.rotation;
+      for (var i = player.truck.update.seq + 1; i < this.seq; i++) {
+        player.updatePos(this.updates[i]);
+      }
+    }
 
     var update = {
       forward: this.forward,
