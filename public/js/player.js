@@ -44,10 +44,12 @@ function Player(x, y, rotation, speed, turn, type, levelBounds) {
     if (data.boost && data.time - data.lastBoost >= this.boostCooldown) {
       this.lastBoost = data.time;
       this.boostVal = this.boostVel;
+      console.log('cd');
     }
     if (data.time - data.lastBoost >= this.boostDuration) {
       this.boostVal = 1;
       this.boostEnd = data.time;
+      console.log('du');
     }
     // if (this.boostStart == 0 && data.boost) {
     //   //if (this.boostEnd == 0 || data.time - this.boostEnd >= this.boostCooldown) {
