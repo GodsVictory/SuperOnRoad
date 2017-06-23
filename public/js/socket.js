@@ -33,8 +33,11 @@ function openSocket() {
     for (var i in data)
       if (players[data[i].id]) {
         players[data[i].id].update = data[i];
-        if (i == id)
+        console.log(i);
+        if (i == id) {
           player.serverUpdate();
+          console.log('me');
+        }
       }
   });
 
