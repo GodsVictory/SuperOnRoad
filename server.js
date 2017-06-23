@@ -58,7 +58,7 @@ var Player = function(id, x, y, rotation, type, level) {
   this.updateData;
 }
 
-var tps = 10;
+var tps = 60;
 const gameloop = require('node-gameloop');
 const id = gameloop.setGameLoop(function(deltaTime) {
     var delta = tps * deltaTime;
@@ -70,10 +70,10 @@ const id = gameloop.setGameLoop(function(deltaTime) {
 
 
         if (players[i].boostStart == 0 && input.boost) {
-          // if (players[i].boostEnd == 0 || input.time - players[i].boostEnd >= players[i].boostCooldown) {
-          players[i].boostVal = players[i].boostVel;
-          players[i].boostStart = input.time;
-          // }
+          if (players[i].boostEnd == 0 || input.time - players[i].boostEnd >= players[i].boostCooldown) {
+            players[i].boostVal = players[i].boostVel;
+            players[i].boostStart = input.time;
+          }
         } else {
           if (input.time - players[i].boostStart >= players[i].boostDuration) {
             players[i].boostVal = 1;
