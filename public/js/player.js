@@ -21,7 +21,7 @@ function Player(x, y, rotation, speed, turn, type, levelBounds) {
     this.y = data.y;
     this.rotation = data.rotation;
     for (var i = data.seq; i < this.seq; i++) {
-      console.log(this.updates[i].boost);
+      console.log(this.updates[i].forward);
       player.updatePos(this.updates[i]);
     }
   }
@@ -42,10 +42,10 @@ function Player(x, y, rotation, speed, turn, type, levelBounds) {
   }
   this.updatePos = function(data) {
     if (this.boostStart == 0 && data.boost) {
-      if (this.boostEnd == 0 || data.time - this.boostEnd >= this.boostCooldown) {
-        this.boostVal = this.boostVel;
-        this.boostStart = data.time;
-      }
+      //if (this.boostEnd == 0 || data.time - this.boostEnd >= this.boostCooldown) {
+      this.boostVal = this.boostVel;
+      this.boostStart = data.time;
+      //}
     } else {
       if (data.time - this.boostStart >= this.boostDuration) {
         this.boostVal = 1;
