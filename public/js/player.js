@@ -30,12 +30,14 @@ function Player(x, y, rotation, speed, turn, boostVel, boostDuration, boostCoold
       seq: this.seq++
     };
     this.updates.push(data);
-    if (player.truck.update)
-      if (player.truck.update.seq > this.lastUpdateSeq) {
-        this.x = player.truck.update.x;
-        this.y = player.truck.update.y;
-        this.rotation = player.truck.update.rotation;
-        for (var i = player.truck.update.seq + 1; i < this.seq; i++)
+    var updateData = player.truck.update;
+    if (updateData)
+      if (updateData.seq > this.lastUpdateSeq) {
+        this.lastUpdateSeq = updateData.seq;
+        this.x = updateData.x;
+        this.y = updateData.y;
+        this.rotation = updateData.rotation;
+        for (var i = updateData.seq + 1; i < this.seq; i++)
           player.updatePos(this.updates[i]);
       }
     this.updatePos(data);
