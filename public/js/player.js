@@ -20,7 +20,7 @@ function Player(x, y, rotation, speed, turn, boostVel, boostDuration, boostCoold
     this.x = updateData.x;
     this.y = updateData.y;
     this.rotation = updateData.rotation;
-    for (var i = updateData.seq; i < this.seq; i++)
+    for (var i = updateData.seq; i < this.seq - 1; i++)
       player.updatePos(this.updates[i]);
     var data = {
       forward: +forward.isDown,

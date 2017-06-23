@@ -28,20 +28,19 @@ io.on('connection', function(socket) {
   });
 
   socket.on('level', function(data) {
-    players[socket.id] = new Player(socket.id, 200, 150, 1.5708, sprites[getRandomInt(0, sprites.length - 1)], loadLevel(data));
+    players[socket.id] = new Player(loadLevel(data));
     io.emit('create', players);
   });
 
 });
 
-var Player = function(id, x, y, rotation, type, level) {
-  this.id = id;
+var Player = function(level) {
   this.speed = 5;
   this.turn = .05;
-  this.x = x;
-  this.y = y;
-  this.rotation = rotation;
-  this.type = type;
+  this.x = level.startX;
+  this.y = level.startY;
+  this.rotation = 1.5708;
+  this.type = sprites[getRandomInt(0, sprites.length - 1)];
   this.level = level;
   this.forward = 0;
   this.back = 0;
