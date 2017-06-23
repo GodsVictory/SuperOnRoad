@@ -31,8 +31,11 @@ function openSocket() {
 
   socket.on('update', function(data) {
     for (var i in data)
-      if (players[data[i].id])
+      if (players[data[i].id]) {
         players[data[i].id].update = data[i];
+        if (i == id)
+          player.serverUpdate();
+      }
   });
 
   socket.on('destroy', function(id) {
