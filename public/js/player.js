@@ -1,6 +1,6 @@
 function Player(x, y, rotation, speed, turn, boostVel, boostDuration, boostCooldown, type, levelBounds) {
   this.truck = new Truck(type);
-  this.truck.spawnAt(200, 150);
+  this.truck.spawnAt(x, y);
   this.lastUpdateSeq = 0;
   this.seq = -1;
   this.updates = [];
