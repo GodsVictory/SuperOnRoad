@@ -17,6 +17,7 @@ function Player(x, y, rotation, speed, turn, type, levelBounds) {
   this.boostCooldown = boostCooldown;
   this.update = function(delta) {
     var data = {
+      id: id,
       forward: +forward.isDown,
       back: +back.isDown,
       left: +left.isDown,
