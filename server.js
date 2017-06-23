@@ -53,10 +53,9 @@ var tps = 60;
 const gameloop = require('node-gameloop');
 const id = gameloop.setGameLoop(function(deltaTime) {
     for (var i = 0; i < inputs.length; i++) {
-      var player = players[inputs[i].id];
+      var data = inputs.shift();
+      var player = players[data.id];
       if (player) {
-        var data = inputs.shift();
-        player.seq = data.seq;
         if (data.time - data.lastBoost >= player.boostDuration) {
           player.boostVal = 1;
         }
@@ -76,7 +75,7 @@ const id = gameloop.setGameLoop(function(deltaTime) {
           x: player.x,
           y: player.y,
           rotation: player.rotation,
-          seq: player.seq
+          seq: data.seq
         };
       }
     }
