@@ -26,7 +26,7 @@ function Player(x, y, rotation, speed, turn, type, levelBounds) {
   }
   this.update = function(delta) {
     for (var i = 0; i < this.updates.length; i++)
-      cosnole.log(this.updates[i]);
+      console.log(this.updates[i]);
     var data = {
       forward: +forward.isDown,
       back: +back.isDown,
