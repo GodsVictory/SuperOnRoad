@@ -32,7 +32,7 @@ function Player(x, y, rotation, speed, turn, type, levelBounds) {
       this.x = player.truck.update.x;
       this.y = player.truck.update.y;
       this.rotation = player.truck.update.rotation;
-      for (var i = player.truck.update.seq + 1; i < this.seq; i++) {
+      for (var i = player.truck.update.seq + 15; i < this.seq; i++) {
         player.updatePos(this.updates[i]);
       }
     }
