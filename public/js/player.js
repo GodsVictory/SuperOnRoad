@@ -21,12 +21,11 @@ function Player(x, y, rotation, speed, turn, type, levelBounds) {
     this.y = data.y;
     this.rotation = data.rotation;
     for (var i = data.seq; i < this.seq; i++) {
+      console.log(this.updates[i].boost);
       player.updatePos(this.updates[i]);
     }
   }
   this.update = function(delta) {
-    for (var i = 0; i < this.updates.length; i++)
-      console.log(this.updates[i].boost);
     var data = {
       forward: +forward.isDown,
       back: +back.isDown,
