@@ -17,6 +17,7 @@ function Player(x, y, rotation, speed, turn, type, levelBounds) {
   this.boostStart = 0;
   this.boostEnd = 0;
   this.serverUpdate = function() {
+    console.log(player.truck.update.boost);
     this.x = player.truck.update.x;
     this.y = player.truck.update.y;
     this.rotation = player.truck.update.rotation;
@@ -35,7 +36,6 @@ function Player(x, y, rotation, speed, turn, type, levelBounds) {
       time: Date.now(),
       seq: this.seq++
     };
-    console.log(data.boost);
     this.updates.push(data);
     this.updatePos(data);
     socket.emit('input', data);
