@@ -20,9 +20,11 @@ function Player(x, y, rotation, speed, turn, boostVel, boostDuration, boostCoold
     this.x = updateData.x;
     this.y = updateData.y;
     this.rotation = updateData.rotation;
-    for (var i = updateData.seq; i < this.seq - 1; i++)
+    for (var i = updateData.seq; i < this.seq; i++)
       player.updatePos(this.updates[i]);
+
     var data = {
+      id: id,
       forward: +forward.isDown,
       back: +back.isDown,
       left: +left.isDown,
@@ -37,6 +39,7 @@ function Player(x, y, rotation, speed, turn, boostVel, boostDuration, boostCoold
     this.updatePos(data);
     socket.emit('input', data);
   }
+
   this.updatePos = function(data) {
     if (data.time - data.lastBoost >= this.boostDuration) {
       this.boostVal = 1;
@@ -45,14 +48,18 @@ function Player(x, y, rotation, speed, turn, boostVel, boostDuration, boostCoold
       this.lastBoost = data.time;
       this.boostVal = this.boostVel;
     }
+
     this.rotation = this.rotation + (-data.left + data.right) * this.turn * data.delta;
+
     var x = this.x + (data.forward - data.back) * this.speed * this.boostVal * Math.sin(this.rotation) * data.delta;
     var y = this.y - (data.forward - data.back) * this.speed * this.boostVal * Math.cos(this.rotation) * data.delta;
+
     if (this.levelBounds[Math.round(x / tileSize) + "," + Math.round(y / tileSize)]) {
       this.x = x;
       this.y = y;
     }
   }
+
   this.show = function() {
     this.truck.setPos(this.x, this.y);
     this.truck.setRotation(this.rotation);

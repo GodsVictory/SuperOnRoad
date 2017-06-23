@@ -12,6 +12,7 @@ var io = require('socket.io')(server);
 var players = {};
 var sprites = ['ambulance', 'audi', 'black_viper', 'car', 'mini_truck', 'mini_van', 'police', 'sedan', 'sonic', 'taxi', 'trashmaster', 'truck'];
 var tileSize = 5;
+var inputs = [];
 
 io.on('connection', function(socket) {
   socket.emit('initialize', socket.id);
@@ -22,6 +23,7 @@ io.on('connection', function(socket) {
   });
 
   socket.on('input', function(data) {
+    inputs.push(data);
     if (players[socket.id]) {
       players[socket.id].inputs.push(data);
     }
@@ -59,13 +61,11 @@ var Player = function(level) {
 var tps = 60;
 const gameloop = require('node-gameloop');
 const id = gameloop.setGameLoop(function(deltaTime) {
-    var delta = tps * deltaTime;
-    for (var i in players) {
-      var player = players[i];
-      var len = players[i].inputs.length;
-      for (var j = 0; j < len; j++) {
-        var data = players[i].inputs.shift();
-        players[i].seq = data.seq;
+    for (var i = 0; i < inputs.length; i++) {
+      var player = players[inputs[i].id];
+      if (player) {
+        var data = inputs.shift();
+        player.seq = data.seq;
         if (data.time - data.lastBoost >= player.boostDuration) {
           player.boostVal = 1;
         }
@@ -80,20 +80,58 @@ const id = gameloop.setGameLoop(function(deltaTime) {
           player.x = x;
           player.y = y;
         }
+        player.updateData = {
+          id: data.id,
+          x: player.x,
+          y: player.y,
+          rotation: player.rotation,
+          seq: player.seq
+        };
       }
-      player.updateData = {
-        id: i,
-        x: player.x,
-        y: player.y,
-        rotation: player.rotation,
-        seq: player.seq
-      };
     }
     var update = [];
     for (var i in players) {
-      update.push(players[i].updateData);
+      if (players[i].updateData)
+        update.push(players[i].updateData);
     }
-    io.emit('update', update);
+    if (update.length > 0)
+      io.emit('update', update);
+
+    /*    var delta = tps * deltaTime;
+        for (var i in players) {
+          var player = players[i];
+          var len = players[i].inputs.length;
+          for (var j = 0; j < len; j++) {
+            var data = players[i].inputs.shift();
+            players[i].seq = data.seq;
+            if (data.time - data.lastBoost >= player.boostDuration) {
+              player.boostVal = 1;
+            }
+            if (data.boost && data.time - data.lastBoost >= player.boostCooldown) {
+              player.lastBoost = data.time;
+              player.boostVal = player.boostVel;
+            }
+            player.rotation = player.rotation + (-data.left + data.right) * player.turn * data.delta;
+            var x = player.x + (data.forward - data.back) * player.speed * player.boostVal * Math.sin(player.rotation) * data.delta;
+            var y = player.y - (data.forward - data.back) * player.speed * player.boostVal * Math.cos(player.rotation) * data.delta;
+            if (player.level.contains(x, y)) {
+              player.x = x;
+              player.y = y;
+            }
+          }
+          player.updateData = {
+            id: i,
+            x: player.x,
+            y: player.y,
+            rotation: player.rotation,
+            seq: player.seq
+          };
+        }
+        var update = [];
+        for (var i in players) {
+          update.push(players[i].updateData);
+        }
+        io.emit('update', update);*/
   },
   1000 / tps);
 
