@@ -29,13 +29,15 @@ function Player(x, y, rotation, speed, turn, type, levelBounds) {
     this.boost = boost.isDown ? 1 : 0;
 
     if (player.truck.update) {
-      console.log(Math.abs(this.x - player.truck.update.x));
+      var before = this.x;
       this.x = player.truck.update.x;
       this.y = player.truck.update.y;
       this.rotation = player.truck.update.rotation;
       for (var i = player.truck.update.seq + 1; i < this.seq; i++) {
         player.updatePos(this.updates[i]);
       }
+      if (before != this.x)
+        console.log(Math.abs(this.x - before));
     }
 
     var update = {
