@@ -18,7 +18,7 @@ function openSocket() {
     for (var i in data) {
       if (i == id) {
         if (!player)
-          player = new Player(data[i].x, data[i].y, data[i].rotation, data[i].speed, data[i].turn, data[i].type, data[i].level.bounds);
+          player = new Player(data[i].x, data[i].y, data[i].rotation, data[i].speed, data[i].turn, data[i].boostVel, data[i].boostDuration, data[i].boostCooldown, data[i].type, data[i].level.bounds);
         players[i] = player.truck;
       } else if (!players[i]) {
         var truck = new Truck(data[i].type);
