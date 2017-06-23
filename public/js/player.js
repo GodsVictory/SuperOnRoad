@@ -29,48 +29,32 @@ function Player(x, y, rotation, speed, turn, type, levelBounds) {
     this.boost = boost.isDown ? 1 : 0;
 
     if (player.truck.update) {
-      var before = this.x;
       this.x = player.truck.update.x;
       this.y = player.truck.update.y;
       this.rotation = player.truck.update.rotation;
       for (var i = player.truck.update.seq + 1; i < this.seq; i++) {
-        player.updatePos(this.updates[i], true);
+        player.updatePos(this.updates[i]);
       }
-      if (before != this.x)
-        console.log(this.x - before);
     }
 
-    var update = {
+    var data = {
       forward: this.forward,
       back: this.back,
       left: this.left,
       right: this.right,
-      boost: this.boost,
+      boost: 0,
       delta: delta,
       time: Date.now(),
-      seq: this.seq++
+      seq: this.seq
     };
-    this.updates.push(update);
-    this.updatePos(update);
-    socket.emit('input', update);
+    this.updates.push(data);
+    this.updatePos(data);
+    socket.emit('input', data);
   }
-  this.updatePos = function(data, boost) {
-    if (boost)
-      if (this.boostStart == 0 && data.boost) {
-        //if (this.boostEnd == 0 || data.time - this.boostEnd >= this.boostCooldown) {
-        this.boostVal = this.boostVel;
-        this.boostStart = data.time;
-        //}
-      } else {
-        if (data.time - this.boostStart >= this.boostDuration) {
-          this.boostVal = 1;
-          this.boostEnd = data.time;
-          this.boostStart = 0;
-        }
-      }
+  this.updatePos = function(data) {
     this.rotation = this.rotation + (-data.left + data.right) * this.turn * data.delta;
-    var x = this.x + (data.forward - data.back) * this.speed * this.boostVal * Math.sin(this.rotation) * data.delta;
-    var y = this.y - (data.forward - data.back) * this.speed * this.boostVal * Math.cos(this.rotation) * data.delta;
+    var x = this.x + (data.forward - data.back) * this.speed * (data.boost == 1 ? data.boost * data.boostVel : 1) * Math.sin(this.rotation) * data.delta;
+    var y = this.y - (data.forward - data.back) * this.speed * (data.boost == 1 ? data.boost * data.boostVel : 1) * Math.cos(this.rotation) * data.delta;
     if (this.levelBounds[Math.round(x / tileSize) + "," + Math.round(y / tileSize)]) {
       this.x = x;
       this.y = y;
@@ -79,5 +63,8 @@ function Player(x, y, rotation, speed, turn, type, levelBounds) {
   this.show = function() {
     this.truck.setPos(this.x, this.y);
     this.truck.setRotation(this.rotation);
+    this.updates[this.seq].x = this.x;
+    this.updates[this.seq].y = this.y;
+    this.seq++;
   }
 }
