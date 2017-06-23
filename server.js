@@ -85,11 +85,10 @@ const id = gameloop.setGameLoop(function(deltaTime) {
         players[i].rotation = players[i].rotation + (-input.left + input.right) * players[i].turn * input.delta;
         var x = players[i].x + (input.forward - input.back) * players[i].speed * players[i].boostVal * Math.sin(players[i].rotation) * input.delta;
         var y = players[i].y - (input.forward - input.back) * players[i].speed * players[i].boostVal * Math.cos(players[i].rotation) * input.delta;
-        if (players[i].level)
-          if (players[i].level.contains(x, y)) {
-            players[i].x = x;
-            players[i].y = y;
-          }
+        if (players[i].level.contains(x, y)) {
+          players[i].x = x;
+          players[i].y = y;
+        }
 
       }
       players[i].updateData = {
