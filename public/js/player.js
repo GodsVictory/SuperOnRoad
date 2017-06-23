@@ -1,6 +1,9 @@
 function Player(x, y, rotation, speed, turn, boostVel, boostDuration, boostCooldown, type, levelBounds) {
   this.truck = new Truck(type);
   this.truck.spawnAt(200, 150);
+  this.lastUpdate = {
+    seq: 0
+  };
   this.seq = 0;
   this.updates = [];
   this.speed = speed;
@@ -17,11 +20,14 @@ function Player(x, y, rotation, speed, turn, boostVel, boostDuration, boostCoold
   this.lastBoost = 0;
   this.update = function(delta) {
     var updateData = player.truck.update;
-    this.x = updateData.x;
-    this.y = updateData.y;
-    this.rotation = updateData.rotation;
-    for (var i = updateData.seq; i < this.seq; i++)
-      player.updatePos(this.updates[i]);
+    if (updateData)
+      if (updateData.seq > this.lastUpdate.seq) {
+        this.x = updateData.x;
+        this.y = updateData.y;
+        this.rotation = updateData.rotation;
+        for (var i = updateData.seq; i < this.seq; i++)
+          player.updatePos(this.updates[i]);
+      }
 
     var data = {
       id: id,
@@ -38,6 +44,7 @@ function Player(x, y, rotation, speed, turn, boostVel, boostDuration, boostCoold
     this.updates.push(data);
     this.updatePos(data);
     socket.emit('input', data);
+    console.log(this.lastBoost);
   }
 
   this.updatePos = function(data) {
