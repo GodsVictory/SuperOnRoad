@@ -15,6 +15,7 @@ function Player(x, y, rotation, speed, turn, boostVel, boostDuration, boostCoold
   this.boostVal = 1;
   this.boostDuration = boostDuration;
   this.boostCooldown = boostCooldown;
+  this.lastBoost = 0;
   this.update = function(delta) {
     var data = {
       id: id,
