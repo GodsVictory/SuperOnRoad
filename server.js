@@ -64,48 +64,35 @@ const gameloop = require('node-gameloop');
 const id = gameloop.setGameLoop(function(deltaTime) {
     var delta = tps * deltaTime;
     for (var i in players) {
+      var player = players[i];
       var len = players[i].inputs.length;
       for (var j = 0; j < len; j++) {
-        var input = players[i].inputs.shift();
-        players[i].seq = input.seq;
+        var data = players[i].inputs.shift();
+        players[i].seq = data.seq;
 
-
-        if (input.boost && input.time - input.lastBoost >= players[i].boostCooldown) {
-          players[i].lastBoost = input.time;
-          players[i].boostVal = players[i].boostVel;
+        if (data.time - data.lastBoost >= player.boostDuration) {
+          player.boostVal = 1;
         }
-        if (input.time - players[i].lastBoost >= players[i].boostDuration) {
-          players[i].boostVal = 1;
-          players[i].lastBoost = input.time;
+        if (data.boost && data.time - data.lastBoost >= player.boostCooldown) {
+          player.lastBoost = data.time;
+          player.boostVal = player.boostVel;
         }
-        // if (players[i].boostStart == 0 && input.boost) {
-        //   //if (players[i].boostEnd == 0 || input.time - players[i].boostEnd >= players[i].boostCooldown) {
-        //   players[i].boostVal = players[i].boostVel;
-        //   players[i].boostStart = input.time;
-        //   //}
-        // } else {
-        //   if (input.time - players[i].boostStart >= players[i].boostDuration) {
-        //     players[i].boostVal = 1;
-        //     players[i].boostEnd = input.time;
-        //     players[i].boostStart = 0;
-        //   }
-        // }
 
-        players[i].rotation = players[i].rotation + (-input.left + input.right) * players[i].turn * input.delta;
-        var x = players[i].x + (input.forward - input.back) * players[i].speed * players[i].boostVal * Math.sin(players[i].rotation) * input.delta;
-        var y = players[i].y - (input.forward - input.back) * players[i].speed * players[i].boostVal * Math.cos(players[i].rotation) * input.delta;
-        if (players[i].level.contains(x, y)) {
-          players[i].x = x;
-          players[i].y = y;
+        player.rotation = player.rotation + (-data.left + data.right) * player.turn * data.delta;
+        var x = player.x + (data.forward - data.back) * player.speed * player.boostVal * Math.sin(player.rotation) * data.delta;
+        var y = player.y - (data.forward - data.back) * player.speed * player.boostVal * Math.cos(player.rotation) * data.delta;
+        if (player.level.contains(x, y)) {
+          player.x = x;
+          player.y = y;
         }
 
       }
-      players[i].updateData = {
+      player.updateData = {
         id: i,
-        x: players[i].x,
-        y: players[i].y,
-        rotation: players[i].rotation,
-        seq: players[i].seq
+        x: player.x,
+        y: player.y,
+        rotation: player.rotation,
+        seq: player.seq
       };
     }
     var update = [];

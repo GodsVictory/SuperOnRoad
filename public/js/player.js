@@ -18,12 +18,12 @@ function Player(x, y, rotation, speed, turn, type, levelBounds) {
   this.lastBoost = 0;
   this.boostEnd = 0;
   this.update = function(delta) {
-    var updateData = player.truck.update;
-    this.x = updateData.x;
-    this.y = updateData.y;
-    this.rotation = updateData.rotation;
-    for (var i = updateData.seq; i < this.seq; i++)
-      player.updatePos(this.updates[i]);
+    // var updateData = player.truck.update;
+    // this.x = updateData.x;
+    // this.y = updateData.y;
+    // this.rotation = updateData.rotation;
+    // for (var i = updateData.seq; i < this.seq; i++)
+    //   player.updatePos(this.updates[i]);
 
     var data = {
       forward: +forward.isDown,
@@ -41,26 +41,13 @@ function Player(x, y, rotation, speed, turn, type, levelBounds) {
     socket.emit('input', data);
   }
   this.updatePos = function(data) {
+    if (data.time - data.lastBoost >= this.boostDuration) {
+      this.boostVal = 1;
+    }
     if (data.boost && data.time - data.lastBoost >= this.boostCooldown) {
       this.lastBoost = data.time;
       this.boostVal = this.boostVel;
     }
-    if (data.time - this.lastBoost >= this.boostDuration) {
-      this.boostVal = 1;
-      this.lastBoost = data.time;
-    }
-    // if (this.boostStart == 0 && data.boost) {
-    //   //if (this.boostEnd == 0 || data.time - this.boostEnd >= this.boostCooldown) {
-    //   this.boostVal = this.boostVel;
-    //   this.boostStart = data.time;
-    //   //}
-    // } else {
-    //   if (data.time - this.boostStart >= this.boostDuration) {
-    //     this.boostVal = 1;
-    //     this.boostEnd = data.time;
-    //     this.boostStart = 0;
-    //   }
-    // }
     this.rotation = this.rotation + (-data.left + data.right) * this.turn * data.delta;
     var x = this.x + (data.forward - data.back) * this.speed * this.boostVal * Math.sin(this.rotation) * data.delta;
     var y = this.y - (data.forward - data.back) * this.speed * this.boostVal * Math.cos(this.rotation) * data.delta;
