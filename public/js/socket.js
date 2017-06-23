@@ -30,7 +30,7 @@ function openSocket() {
   });
 
   socket.on('update', function(data) {
-    for (var i in data)
+    for (var i = 0; i < data.length; i++)
       if (players[data[i].id])
         players[data[i].id].update = data[i];
   });

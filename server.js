@@ -51,10 +51,11 @@ var Player = function(level) {
 var tps = 60;
 const gameloop = require('node-gameloop');
 const id = gameloop.setGameLoop(function(deltaTime) {
-    for (var i = 0; i < inputs.length; i++) {
-      var player = players[inputs[i].id];
+    var len = inputs.length;
+    for (var i = 0; i < len; i++) {
+      var data = inputs.shift();
+      var player = players[data.id];
       if (player) {
-        var data = inputs.shift();
         player.rotation = player.rotation + (-data.left + data.right) * player.turn * data.delta;
         var x = player.x + (data.forward - data.back) * player.speed * player.boostVal * Math.sin(player.rotation) * data.delta;
         var y = player.y - (data.forward - data.back) * player.speed * player.boostVal * Math.cos(player.rotation) * data.delta;
