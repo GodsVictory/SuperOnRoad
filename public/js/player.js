@@ -42,8 +42,6 @@ function Player(x, y, rotation, speed, turn, boostVel, boostDuration, boostCoold
       }
     this.updatePos(data);
     socket.emit('input', data);
-    this.truck.setPos(this.x, this.y);
-    this.truck.setRotation(this.rotation);
   }
 
   this.updatePos = function(data) {
@@ -67,7 +65,7 @@ function Player(x, y, rotation, speed, turn, boostVel, boostDuration, boostCoold
   }
 
   this.show = function() {
-    // this.truck.setPos(this.x, this.y);
-    // this.truck.setRotation(this.rotation);
+    this.truck.setPos(this.x, this.y);
+    this.truck.setRotation(this.rotation);
   }
 }
