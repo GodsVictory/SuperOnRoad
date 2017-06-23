@@ -15,6 +15,7 @@ function Player(x, y, rotation, speed, turn, type, levelBounds) {
   this.boostDuration = 1000;
   this.boostCooldown = 3000;
   this.boostStart = 0;
+  this.lastBoost = 0;
   this.boostEnd = 0;
   this.update = function(delta) {
     var updateData = player.truck.update;
@@ -30,7 +31,7 @@ function Player(x, y, rotation, speed, turn, type, levelBounds) {
       left: +left.isDown,
       right: +right.isDown,
       boost: +boost.isDown,
-      lastBoost: this.boostEnd,
+      lastBoost: this.lastBoost,
       delta: delta,
       time: Date.now(),
       seq: this.seq++

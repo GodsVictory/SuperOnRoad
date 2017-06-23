@@ -53,6 +53,7 @@ var Player = function(id, x, y, rotation, type, level) {
   this.boostCooldown = 3000;
   this.boostStart = 0;
   this.boostEnd = 0;
+  this.lastBoost = 0;
   this.inputs = [];
   this.seq = 0;
   this.updateData;
@@ -69,18 +70,26 @@ const id = gameloop.setGameLoop(function(deltaTime) {
         players[i].seq = input.seq;
 
 
-        if (players[i].boostStart == 0 && input.boost) {
-          //if (players[i].boostEnd == 0 || input.time - players[i].boostEnd >= players[i].boostCooldown) {
+        if (input.boost && input.time - input.lastBoost >= players[i].boostCooldown) {
+          players[i].lastBoost = input.time;
           players[i].boostVal = players[i].boostVel;
-          players[i].boostStart = input.time;
-          //}
-        } else {
-          if (input.time - players[i].boostStart >= players[i].boostDuration) {
-            players[i].boostVal = 1;
-            players[i].boostEnd = input.time;
-            players[i].boostStart = 0;
-          }
         }
+        if (input.time - input.lastBoost >= players[i].boostDuration) {
+          players[i].boostVal = 1;
+          players[i].boostEnd = input.time;
+        }
+      // if (players[i].boostStart == 0 && input.boost) {
+      //   //if (players[i].boostEnd == 0 || input.time - players[i].boostEnd >= players[i].boostCooldown) {
+      //   players[i].boostVal = players[i].boostVel;
+      //   players[i].boostStart = input.time;
+      //   //}
+      // } else {
+      //   if (input.time - players[i].boostStart >= players[i].boostDuration) {
+      //     players[i].boostVal = 1;
+      //     players[i].boostEnd = input.time;
+      //     players[i].boostStart = 0;
+      //   }
+      // }
 
         players[i].rotation = players[i].rotation + (-input.left + input.right) * players[i].turn * input.delta;
         var x = players[i].x + (input.forward - input.back) * players[i].speed * players[i].boostVal * Math.sin(players[i].rotation) * input.delta;
