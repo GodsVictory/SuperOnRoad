@@ -24,6 +24,7 @@ function Player(x, y, rotation, speed, turn, boostVel, boostDuration, boostCoold
       left: +left.isDown,
       right: +right.isDown,
       boost: 0,
+      lastBoost: this.lastBoost,
       delta: delta,
       time: Date.now(),
       seq: this.seq++
