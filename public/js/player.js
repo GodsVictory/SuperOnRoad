@@ -45,25 +45,25 @@ function Player(x, y, rotation, speed, turn, type, levelBounds) {
       boost: this.boost,
       delta: delta,
       time: Date.now(),
-      seq: this.seq
+      seq: this.seq++
     };
     this.updates.push(data);
     //this.updatePos(data);
     socket.emit('input', data);
   }
   this.updatePos = function(data) {
-    if (this.boostStart == 0 && data.boost) {
-      //if (this.boostEnd == 0 || data.time - this.boostEnd >= this.boostCooldown) {
-      this.boostVal = this.boostVel;
-      this.boostStart = data.time;
-      //}
-    } else {
-      if (data.time - this.boostStart >= this.boostDuration) {
-        this.boostVal = 1;
-        this.boostEnd = data.time;
-        this.boostStart = 0;
-      }
-    }
+    // if (this.boostStart == 0 && data.boost) {
+    //   //if (this.boostEnd == 0 || data.time - this.boostEnd >= this.boostCooldown) {
+    //   this.boostVal = this.boostVel;
+    //   this.boostStart = data.time;
+    //   //}
+    // } else {
+    //   if (data.time - this.boostStart >= this.boostDuration) {
+    //     this.boostVal = 1;
+    //     this.boostEnd = data.time;
+    //     this.boostStart = 0;
+    //   }
+    // }
     this.rotation = this.rotation + (-data.left + data.right) * this.turn * data.delta;
     var x = this.x + (data.forward - data.back) * this.speed * this.boostVal * Math.sin(this.rotation) * data.delta;
     var y = this.y - (data.forward - data.back) * this.speed * this.boostVal * Math.cos(this.rotation) * data.delta;
@@ -75,8 +75,5 @@ function Player(x, y, rotation, speed, turn, type, levelBounds) {
   this.show = function() {
     this.truck.setPos(this.x, this.y);
     this.truck.setRotation(this.rotation);
-    this.updates[this.seq].x = this.x;
-    this.updates[this.seq].y = this.y;
-    this.seq++;
   }
 }
