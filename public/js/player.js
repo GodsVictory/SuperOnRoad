@@ -17,7 +17,6 @@ function Player(x, y, rotation, speed, turn, type, levelBounds) {
   this.boostStart = 0;
   this.boostEnd = 0;
   this.serverUpdate = function(data) {
-    console.log(data.boost);
     this.x = data.x;
     this.y = data.y;
     this.rotation = data.rotation;
@@ -26,6 +25,8 @@ function Player(x, y, rotation, speed, turn, type, levelBounds) {
     }
   }
   this.update = function(delta) {
+    for (var i = 0; i < this.updates.length; i++)
+      cosnole.log(this.updates[i]);
     var data = {
       forward: +forward.isDown,
       back: +back.isDown,
