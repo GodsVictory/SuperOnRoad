@@ -25,19 +25,19 @@ function Player(x, y, rotation, speed, turn, type, levelBounds) {
     }
   }
   this.update = function(delta) {
-    var forward = forward.isDown ? 1 : 0;
-    var back = back.isDown ? 1 : 0;
-    var left = left.isDown ? 1 : 0;
-    var right = right.isDown ? 1 : 0;
-    var boost = boost.isDown ? 1 : 0;
+    var f = forward.isDown ? 1 : 0;
+    var b = back.isDown ? 1 : 0;
+    var l = left.isDown ? 1 : 0;
+    var r = right.isDown ? 1 : 0;
+    var b = boost.isDown ? 1 : 0;
 
 
     var data = {
-      forward: forward,
-      back: back,
-      left: left,
-      right: right,
-      boost: boost,
+      forward: +forward.isDown,
+      back: +back.isDown,
+      left: +left.isDown,
+      right: +right.isDown,
+      boost: +boost.isDown,
       delta: delta,
       time: Date.now(),
       seq: this.seq++
