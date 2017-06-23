@@ -20,16 +20,10 @@ function Player(x, y, rotation, speed, turn, type, levelBounds) {
     this.x = player.truck.update.x;
     this.y = player.truck.update.y;
     this.rotation = player.truck.update.rotation;
-    this.updates.splice(0, player.truck.update.seq);
-    for (var i = 0;i< this.updates.length;i++) {
-
-      console.log(this.updates[i]);
+    for (var i = player.truck.update.seq; i < this.seq; i++) {
+      console.log(i, this.updates[i].seq, this.updates[i].boost);
       player.updatePos(this.updates[i]);
     }
-    // for (var i = player.truck.update.seq; i < this.seq; i++) {
-    //   console.log(this.updates[i]);
-    //   player.updatePos(this.updates[i]);
-    // }
   }
   this.update = function(delta) {
     var data = {
