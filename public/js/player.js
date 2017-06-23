@@ -32,9 +32,9 @@ function Player(x, y, rotation, speed, turn, type, levelBounds) {
       this.x = player.truck.update.x;
       this.y = player.truck.update.y;
       this.rotation = player.truck.update.rotation;
-      for (var i = player.truck.update.seq + 1; i < this.seq; i++) {
-        player.updatePos(this.updates[i]);
-      }
+      // for (var i = player.truck.update.seq + 1; i < this.seq; i++) {
+      //   player.updatePos(this.updates[i]);
+      // }
     }
 
     var data = {
@@ -42,7 +42,7 @@ function Player(x, y, rotation, speed, turn, type, levelBounds) {
       back: this.back,
       left: this.left,
       right: this.right,
-      boost: 0,
+      boost: this.boost,
       delta: delta,
       time: Date.now(),
       seq: this.seq
@@ -52,9 +52,21 @@ function Player(x, y, rotation, speed, turn, type, levelBounds) {
     socket.emit('input', data);
   }
   this.updatePos = function(data) {
+    if (this.boostStart == 0 && data.boost) {
+      //if (this.boostEnd == 0 || data.time - this.boostEnd >= this.boostCooldown) {
+      this.boostVal = this.boostVel;
+      this.boostStart = data.time;
+      //}
+    } else {
+      if (data.time - this.boostStart >= this.boostDuration) {
+        this.boostVal = 1;
+        this.boostEnd = data.time;
+        this.boostStart = 0;
+      }
+    }
     this.rotation = this.rotation + (-data.left + data.right) * this.turn * data.delta;
-    var x = this.x + (data.forward - data.back) * this.speed * (data.boost == 1 ? data.boost * data.boostVel : 1) * Math.sin(this.rotation) * data.delta;
-    var y = this.y - (data.forward - data.back) * this.speed * (data.boost == 1 ? data.boost * data.boostVel : 1) * Math.cos(this.rotation) * data.delta;
+    var x = this.x + (data.forward - data.back) * this.speed * this.boostVal * Math.sin(this.rotation) * data.delta;
+    var y = this.y - (data.forward - data.back) * this.speed * this.boostVal * Math.cos(this.rotation) * data.delta;
     if (this.levelBounds[Math.round(x / tileSize) + "," + Math.round(y / tileSize)]) {
       this.x = x;
       this.y = y;
