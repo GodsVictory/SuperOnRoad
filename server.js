@@ -51,8 +51,6 @@ var Player = function(id, x, y, rotation, type, level) {
   this.boostVal = 1;
   this.boostDuration = 1000;
   this.boostCooldown = 3000;
-  this.boostStart = 0;
-  this.boostEnd = 0;
   this.lastBoost = 0;
   this.inputs = [];
   this.seq = 0;
@@ -69,7 +67,6 @@ const id = gameloop.setGameLoop(function(deltaTime) {
       for (var j = 0; j < len; j++) {
         var data = players[i].inputs.shift();
         players[i].seq = data.seq;
-
         if (data.time - data.lastBoost >= player.boostDuration) {
           player.boostVal = 1;
         }
@@ -77,7 +74,6 @@ const id = gameloop.setGameLoop(function(deltaTime) {
           player.lastBoost = data.time;
           player.boostVal = player.boostVel;
         }
-
         player.rotation = player.rotation + (-data.left + data.right) * player.turn * data.delta;
         var x = player.x + (data.forward - data.back) * player.speed * player.boostVal * Math.sin(player.rotation) * data.delta;
         var y = player.y - (data.forward - data.back) * player.speed * player.boostVal * Math.cos(player.rotation) * data.delta;
@@ -85,7 +81,6 @@ const id = gameloop.setGameLoop(function(deltaTime) {
           player.x = x;
           player.y = y;
         }
-
       }
       player.updateData = {
         id: i,
@@ -102,7 +97,6 @@ const id = gameloop.setGameLoop(function(deltaTime) {
     io.emit('update', update);
   },
   1000 / tps);
-
 
 function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;

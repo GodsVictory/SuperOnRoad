@@ -18,12 +18,12 @@ function Player(x, y, rotation, speed, turn, type, levelBounds) {
   this.lastBoost = 0;
   this.boostEnd = 0;
   this.update = function(delta) {
-    // var updateData = player.truck.update;
-    // this.x = updateData.x;
-    // this.y = updateData.y;
-    // this.rotation = updateData.rotation;
-    // for (var i = updateData.seq; i < this.seq; i++)
-    //   player.updatePos(this.updates[i]);
+    var updateData = player.truck.update;
+    this.x = updateData.x;
+    this.y = updateData.y;
+    this.rotation = updateData.rotation;
+    for (var i = updateData.seq; i < this.seq; i++)
+      player.updatePos(this.updates[i]);
 
     var data = {
       forward: +forward.isDown,
