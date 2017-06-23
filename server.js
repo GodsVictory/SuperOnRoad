@@ -12,6 +12,7 @@ var io = require('socket.io')(server);
 var players = {};
 var sprites = ['ambulance', 'audi', 'black_viper', 'car', 'mini_truck', 'mini_van', 'police', 'sedan', 'sonic', 'taxi', 'trashmaster', 'truck'];
 var tileSize = 5;
+var inputs = [];
 
 io.on('connection', function(socket) {
   socket.emit('initialize', socket.id);
@@ -22,9 +23,7 @@ io.on('connection', function(socket) {
   });
 
   socket.on('input', function(data) {
-    if (players[socket.id]) {
-      players[socket.id].inputs.push(data);
-    }
+    inputs.push(data);
   });
 
   socket.on('level', function(data) {
@@ -43,51 +42,43 @@ var Player = function(id, x, y, rotation, type, level) {
   this.rotation = rotation;
   this.type = type;
   this.level = level;
-  this.forward = 0;
-  this.back = 0;
-  this.left = 0;
-  this.right = 0;
   this.boostVel = 2;
   this.boostVal = 1;
   this.boostDuration = 1000;
   this.boostCooldown = 3000;
-  this.boostStart = 0;
-  this.boostEnd = 0;
-  this.inputs = [];
-  this.seq = 0;
   this.updateData;
 }
 
 var tps = 60;
 const gameloop = require('node-gameloop');
 const id = gameloop.setGameLoop(function(deltaTime) {
-    var delta = tps * deltaTime;
-    for (var i in players) {
-      var len = players[i].inputs.length;
-      for (var j = 0; j < len; j++) {
-        var input = players[i].inputs.shift();
-        players[i].seq = input.seq;
-        players[i].rotation = players[i].rotation + (-input.left + input.right) * players[i].turn * input.delta;
-        var x = players[i].x + (input.forward - input.back) * players[i].speed * (input.boost == 1 ? input.boost * players[i].boostVel : 1) * Math.sin(players[i].rotation) * input.delta;
-        var y = players[i].y - (input.forward - input.back) * players[i].speed * (input.boost == 1 ? input.boost * players[i].boostVel : 1) * Math.cos(players[i].rotation) * input.delta;
-        if (players[i].level.contains(x, y)) {
-          players[i].x = x;
-          players[i].y = y;
+    for (var i = 0; i < inputs.length; i++) {
+      var player = players[inputs[i].id];
+      if (player) {
+        var data = inputs.shift();
+        player.rotation = player.rotation + (-data.left + data.right) * player.turn * data.delta;
+        var x = player.x + (data.forward - data.back) * player.speed * player.boostVal * Math.sin(player.rotation) * data.delta;
+        var y = player.y - (data.forward - data.back) * player.speed * player.boostVal * Math.cos(player.rotation) * data.delta;
+        if (player.level.contains(x, y)) {
+          player.x = x;
+          player.y = y;
         }
+        player.updateData = {
+          id: data.id,
+          x: player.x,
+          y: player.y,
+          rotation: player.rotation,
+          seq: data.seq
+        };
       }
-      players[i].updateData = {
-        id: i,
-        x: players[i].x,
-        y: players[i].y,
-        rotation: players[i].rotation,
-        seq: players[i].seq
-      };
     }
     var update = [];
     for (var i in players) {
-      update.push(players[i].updateData);
+      if (players[i].updateData)
+        update.push(players[i].updateData);
     }
-    io.emit('update', update);
+    if (update.length > 0)
+      io.emit('update', update);
   },
   1000 / tps);
 
