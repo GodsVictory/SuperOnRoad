@@ -37,7 +37,7 @@ function Player(x, y, rotation, speed, turn, type, levelBounds) {
       seq: this.seq++
     };
     this.updates.push(data);
-    //this.updatePos(data);
+    this.updatePos(data);
     socket.emit('input', data);
   }
   this.updatePos = function(data) {
