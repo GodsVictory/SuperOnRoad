@@ -24,9 +24,6 @@ io.on('connection', function(socket) {
 
   socket.on('input', function(data) {
     inputs.push(data);
-    if (players[socket.id]) {
-      players[socket.id].inputs.push(data);
-    }
   });
 
   socket.on('level', function(data) {
@@ -44,17 +41,11 @@ var Player = function(level) {
   this.rotation = 1.5708;
   this.type = sprites[getRandomInt(0, sprites.length - 1)];
   this.level = level;
-  this.forward = 0;
-  this.back = 0;
-  this.left = 0;
-  this.right = 0;
   this.boostVel = 2;
   this.boostVal = 1;
   this.boostDuration = 500;
   this.boostCooldown = 1000;
   this.lastBoost = 0;
-  this.inputs = [];
-  this.seq = 0;
   this.updateData;
 }
 
