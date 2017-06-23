@@ -1,9 +1,7 @@
 function Player(x, y, rotation, speed, turn, boostVel, boostDuration, boostCooldown, type, levelBounds) {
   this.truck = new Truck(type);
   this.truck.spawnAt(200, 150);
-  this.lastUpdate = {
-    seq: 0
-  };
+  this.lastUpdateSeq = 0;
   this.seq = 0;
   this.updates = [];
   this.speed = speed;
@@ -21,7 +19,8 @@ function Player(x, y, rotation, speed, turn, boostVel, boostDuration, boostCoold
   this.update = function(delta) {
     var updateData = player.truck.update;
     if (updateData)
-      if (updateData.seq > this.lastUpdate.seq) {
+      if (updateData.seq > this.lastUpdateSeq) {
+        this.lastUpdateSeq = updateData.seq;
         this.x = updateData.x;
         this.y = updateData.y;
         this.rotation = updateData.rotation;
