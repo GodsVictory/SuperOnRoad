@@ -43,6 +43,7 @@ function Player(x, y, rotation, speed, turn, boostVel, boostDuration, boostCoold
     this.updatePos(data);
     socket.emit('input', data);
   }
+
   this.updatePos = function(data) {
     this.rotation = this.rotation + (-data.left + data.right) * this.turn * data.delta;
     var x = this.x + (data.forward - data.back) * this.speed * (data.boost == 1 ? data.boost * data.boostVel : 1) * Math.sin(this.rotation) * data.delta;
@@ -52,6 +53,7 @@ function Player(x, y, rotation, speed, turn, boostVel, boostDuration, boostCoold
       this.y = y;
     }
   }
+
   this.show = function() {
     this.truck.setPos(this.x, this.y);
     this.truck.setRotation(this.rotation);
