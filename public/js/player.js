@@ -21,16 +21,17 @@ function Player(x, y, rotation, speed, turn, type, levelBounds) {
   this.boostEnd = 0;
   this.update = function(delta) {
     var updateData = player.truck.update;
-    if (updateData.seq != this.lastupdate.seq) {
-      this.lastUpdate = updateData;
-      this.x = updateData.x;
-      this.y = updateData.y;
-      this.rotation = updateData.rotation;
-      for (var i = updateData.seq; i < this.seq; i++) {
-        console.log(this.updates[i].forward);
-        player.updatePos(this.updates[i]);
+    if (updateData)
+      if (updateData.seq != this.lastupdate.seq) {
+        this.lastUpdate = updateData;
+        this.x = updateData.x;
+        this.y = updateData.y;
+        this.rotation = updateData.rotation;
+        for (var i = updateData.seq; i < this.seq; i++) {
+          console.log(this.updates[i].forward);
+          player.updatePos(this.updates[i]);
+        }
       }
-    }
     var data = {
       forward: +forward.isDown,
       back: +back.isDown,
